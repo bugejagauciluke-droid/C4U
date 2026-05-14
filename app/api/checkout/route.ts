@@ -5,7 +5,7 @@ import { stripe, isStripeConfigured, TIER_PRICE_IDS } from "@/lib/stripe";
 export async function POST(req: NextRequest) {
   if (!isStripeConfigured()) {
     return NextResponse.json(
-      { error: "Stripe is not configured. Add STRIPE_SECRET_KEY to .env.local." },
+      { error: "Payments are temporarily unavailable. Please try again shortly." },
       { status: 503 }
     );
   }
