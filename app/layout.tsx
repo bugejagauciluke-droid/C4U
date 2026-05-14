@@ -14,19 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    metadataBase: new URL("https://c4u.app"),
+    metadataBase: new URL("https://c4ucare.netlify.app"),
     openGraph: {
       title,
       description,
       type: "website",
       siteName: branding.appName,
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og-image.png"],
     },
   };
 }
