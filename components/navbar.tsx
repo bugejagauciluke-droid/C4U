@@ -58,7 +58,7 @@ export function Navbar({ appName = "C4U" }: { appName?: string }) {
             </>
           ) : (
             <>
-              <SignInButton mode="modal">
+              <SignInButton mode="modal" fallbackRedirectUrl="/onboarding">
                 <Button variant="outline" size="sm">Sign in</Button>
               </SignInButton>
               <Link href="/support">
