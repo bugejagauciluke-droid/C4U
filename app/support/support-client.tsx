@@ -21,7 +21,7 @@ interface Exercise {
   type: "breathing"|"grounding"|"social"|"movement"|"cognitive"|"journaling";
   why: string;
 }
-interface SupportResponse { acknowledgment: string; exercises: Exercise[]; closingMessage: string; }
+interface SupportResponse { isCrisis?: boolean; acknowledgment: string; exercises: Exercise[]; closingMessage: string; }
 type Step = "entry"|"describe"|"loading"|"results";
 
 export interface PageConfig {
@@ -285,6 +285,27 @@ export function SupportClient({ config, userTier = "free" }: { config: PageConfi
           {/* Step 4 */}
           {step === "results" && response && (
             <motion.div key="results" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.4 }}>
+
+              {/* Crisis banner — shown when AI detects suicidal ideation */}
+              {response.isCrisis && (
+                <motion.div initial={{ opacity:0, y:-8 }} animate={{ opacity:1, y:0 }}
+                  className="rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 p-6 text-white mb-6 shadow-xl border-2 border-white/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Heart className="h-5 w-5 fill-white text-white" />
+                    <span className="font-bold text-base">You are not alone — help is here right now</span>
+                  </div>
+                  <div className="space-y-2 text-sm text-white/90">
+                    <p>🆘 <strong>Crisis Text Line:</strong> Text <strong>HOME</strong> to <strong>741741</strong> — free, 24/7, confidential</p>
+                    <p>🌍 <strong>International:</strong>{" "}
+                      <a href="https://www.befrienders.org" target="_blank" rel="noopener noreferrer" className="underline font-semibold">befrienders.org</a>
+                      {" "}— find a helpline in your country
+                    </p>
+                    <p>🚨 <strong>Emergency:</strong> Call <strong>112</strong> (Europe) or your local emergency number</p>
+                  </div>
+                  <p className="mt-4 text-white/80 text-sm italic">C4U&apos;s companion is here for you right now too — keep reading.</p>
+                </motion.div>
+              )}
+
               {/* Acknowledgment: teal→blue-700 — calming, parasympathetic, NOT teal→violet
                   which adds energy/stimulation. Distressed users need maximum calm here. */}
               <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} className="rounded-2xl bg-gradient-to-br from-teal-500 to-blue-700 p-6 text-white mb-8 shadow-lg">
