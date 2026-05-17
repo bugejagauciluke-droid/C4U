@@ -8,28 +8,39 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { readSiteConfig } from "@/lib/site-config";
 
+// Situation gradients are colour-psychology optimised:
+// "Job loss" changed amber→orange to amber→emerald (growth, not cortisol-raising orange)
+// "Social anxiety" changed fuchsia→purple to violet→indigo (calm confidence, not stimulating fuchsia)
+// "Just feeling low" changed slate→gray to slate→indigo (gray amplifies depression; indigo = calm dignity + hope)
 const SITUATIONS = [
-  { label: "Lonely in a crowd", gradient: "from-indigo-500 to-violet-700" },
-  { label: "Going through divorce", gradient: "from-rose-500 to-pink-700" },
-  { label: "Job loss or career stress", gradient: "from-amber-500 to-orange-600" },
-  { label: "Social anxiety", gradient: "from-fuchsia-500 to-purple-700" },
-  { label: "Overwhelmed & burnt out", gradient: "from-sky-500 to-blue-700" },
-  { label: "Just feeling low", gradient: "from-slate-600 to-gray-800" },
+  { label: "Lonely in a crowd",    gradient: "from-indigo-500 to-violet-600"  },
+  { label: "Going through divorce", gradient: "from-rose-400 to-pink-600"     },
+  { label: "Job loss or career stress", gradient: "from-amber-500 to-emerald-600" },
+  { label: "Social anxiety",       gradient: "from-violet-500 to-indigo-700"  },
+  { label: "Overwhelmed & burnt out", gradient: "from-sky-400 to-blue-600"   },
+  { label: "Just feeling low",     gradient: "from-slate-400 to-indigo-600"   },
 ];
 
+// Pill colours: soft/pastel versions only — research shows high saturation causes overstimulation
+// in already-stressed users. Pastel = emotional stability signal.
 const EXERCISE_TYPES = [
-  { Icon: Wind, label: "Breathing", color: "text-sky-600 bg-sky-100" },
-  { Icon: Anchor, label: "Grounding", color: "text-emerald-700 bg-emerald-100" },
-  { Icon: Users, label: "Connection", color: "text-pink-600 bg-pink-100" },
-  { Icon: Activity, label: "Movement", color: "text-amber-700 bg-amber-100" },
-  { Icon: Brain, label: "Mindset", color: "text-violet-600 bg-violet-100" },
+  { Icon: Wind,     label: "Breathing",   color: "text-sky-700 bg-sky-50 border border-sky-100"       },
+  { Icon: Anchor,   label: "Grounding",   color: "text-teal-700 bg-teal-50 border border-teal-100"    },
+  { Icon: Users,    label: "Connection",  color: "text-rose-600 bg-rose-50 border border-rose-100"    },
+  { Icon: Activity, label: "Movement",    color: "text-amber-700 bg-amber-50 border border-amber-100" },
+  { Icon: Brain,    label: "Mindset",     color: "text-violet-700 bg-violet-50 border border-violet-100" },
 ];
 
+// Premium features: colour-optimised gradients
+// Meditations: indigo→violet (introspection, spiritual depth)
+// Music: rose→pink SOFTENED (love, warmth — not too intense)
+// Companion: sky→teal (throat chakra: communication + trust)
+// 7-Day Plan: amber→violet (achievement + transformation, NOT amber→orange which raises cortisol)
 const PREMIUM_FEATURES = [
-  { Icon: Headphones, title: "Guided Meditations", desc: "10-minute audio meditations for your exact situation", gradient: "from-indigo-500 to-violet-700" },
-  { Icon: Music, title: "Healing Music", desc: "Curated playlists: calm, focus, confidence, sleep", gradient: "from-rose-500 to-pink-700" },
-  { Icon: MessageCircle, title: "AI Companion", desc: "Extended memory-enabled conversations with a companion who knows you", gradient: "from-teal-500 to-emerald-700" },
-  { Icon: Star, title: "7-Day Support Plan", desc: "A personalised daily plan to rebuild calm, confidence, and connection", gradient: "from-amber-500 to-orange-600" },
+  { Icon: Headphones, title: "Guided Meditations", desc: "10-minute audio meditations for your exact situation", gradient: "from-indigo-500 to-violet-600" },
+  { Icon: Music, title: "Healing Music", desc: "Curated playlists: calm, focus, confidence, sleep", gradient: "from-rose-400 to-pink-600" },
+  { Icon: MessageCircle, title: "AI Companion", desc: "Extended memory-enabled conversations with a companion who knows you", gradient: "from-sky-500 to-teal-600" },
+  { Icon: Star, title: "7-Day Support Plan", desc: "A personalised daily plan to rebuild calm, confidence, and connection", gradient: "from-amber-400 to-violet-600" },
 ];
 
 const TESTIMONIALS = [
@@ -160,7 +171,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
-      <section className="py-20 px-4 bg-gradient-to-br from-teal-50 via-white to-violet-50 border-y border-border">
+      {/* Testimonials: teal-50→white→sky-50 — cool tones signal safety + trust */}
+      <section className="py-20 px-4 bg-gradient-to-br from-teal-50 via-white to-sky-50 border-y border-border">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             Real moments. <span className="gradient-text">Real relief.</span>

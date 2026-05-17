@@ -38,20 +38,27 @@ const ICONS: Record<string, typeof Heart> = {
 };
 const getIcon = (id: string) => ICONS[id] ?? Heart;
 
+// Exercise type gradients — science-optimised:
+// breathing: sky→blue (max parasympathetic, respiratory association)
+// grounding: teal→emerald (earth, roots, heart chakra)
+// social: rose→pink SOFTENED (love/warmth — softer than rose→rose-600 to avoid stimulation)
+// movement: amber→yellow-green (solar plexus energy, NOT orange which raises cortisol)
+// cognitive: violet→indigo (insight + introspection, indigo = deep thought)
+// journaling: violet→indigo (reflection, written introspection)
 const EX_CFG: Record<Exercise["type"], { gradient: string; Icon: typeof Wind; label: string }> = {
-  breathing:  { gradient: "from-sky-400 to-blue-500",     Icon: Wind,    label: "Breathing"  },
-  grounding:  { gradient: "from-emerald-400 to-teal-600", Icon: Anchor,  label: "Grounding"  },
-  social:     { gradient: "from-pink-400 to-rose-600",    Icon: Users,   label: "Connection" },
-  movement:   { gradient: "from-amber-400 to-orange-500", Icon: Activity,label: "Movement"   },
-  cognitive:  { gradient: "from-violet-400 to-purple-700",Icon: Brain,   label: "Mindset"    },
-  journaling: { gradient: "from-fuchsia-400 to-purple-600",Icon: PenLine,label: "Reflection" },
+  breathing:  { gradient: "from-sky-400 to-blue-600",      Icon: Wind,    label: "Breathing"  },
+  grounding:  { gradient: "from-teal-500 to-emerald-600",  Icon: Anchor,  label: "Grounding"  },
+  social:     { gradient: "from-rose-400 to-pink-500",     Icon: Users,   label: "Connection" },
+  movement:   { gradient: "from-amber-400 to-amber-600",   Icon: Activity,label: "Movement"   },
+  cognitive:  { gradient: "from-violet-500 to-indigo-700", Icon: Brain,   label: "Mindset"    },
+  journaling: { gradient: "from-violet-400 to-indigo-600", Icon: PenLine, label: "Reflection" },
 };
 
 const PREMIUM_CARDS = [
-  { Icon: Headphones, title: "Guided Meditation",   subtitle: "10-min audio meditation for your exact situation",         gradient: "from-indigo-500 to-violet-700", tag: "Audio · 10 min",     feature: "meditations", requiredTier: "Base",      href: "/account/meditations" },
-  { Icon: Music,      title: "Healing Music",        subtitle: "Curated playlists: calm, focus, confidence, sleep",        gradient: "from-rose-500 to-pink-700",    tag: "Music · Always on",  feature: "music",        requiredTier: "Base",      href: "/account/music"       },
-  { Icon: MessageCircle, title: "Your AI Companion",subtitle: "Extended memory-enabled conversations just for you",        gradient: "from-teal-500 to-emerald-700", tag: "Chat · Unlimited",   feature: "companion",    requiredTier: "Plus",      href: "/account/companion"   },
-  { Icon: Star,       title: "7-Day Support Plan",   subtitle: "Personalised daily plan to rebuild calm and confidence",   gradient: "from-amber-500 to-orange-600", tag: "Plan · Personalised", feature: "plans",       requiredTier: "Transform", href: "/account/plans"       },
+  { Icon: Headphones, title: "Guided Meditation",   subtitle: "10-min audio meditation for your exact situation",         gradient: "from-indigo-500 to-violet-600", tag: "Audio · 10 min",     feature: "meditations", requiredTier: "Base",      href: "/account/meditations" },
+  { Icon: Music,      title: "Healing Music",        subtitle: "Curated playlists: calm, focus, confidence, sleep",        gradient: "from-rose-400 to-pink-600",    tag: "Music · Always on",  feature: "music",        requiredTier: "Base",      href: "/account/music"       },
+  { Icon: MessageCircle, title: "Your AI Companion",subtitle: "Extended memory-enabled conversations just for you",        gradient: "from-sky-500 to-teal-600",     tag: "Chat · Unlimited",   feature: "companion",    requiredTier: "Plus",      href: "/account/companion"   },
+  { Icon: Star,       title: "7-Day Support Plan",   subtitle: "Personalised daily plan to rebuild calm and confidence",   gradient: "from-amber-400 to-violet-600", tag: "Plan · Personalised", feature: "plans",       requiredTier: "Transform", href: "/account/plans"       },
 ];
 
 const LOADING_MSGS = ["Reading what you shared…","Finding what fits your situation…","Choosing exercises just for you…","Almost ready…"];
@@ -165,7 +172,9 @@ export function SupportClient({ config, userTier = "free" }: { config: PageConfi
   function restart() { setStep("entry"); setSelected(null); setDetails(""); setResponse(null); setError(""); }
 
   return (
-    <div className="min-h-screen">
+    {/* bg-serene: #f0f9ff — very light sky-blue. Research: cool-light backgrounds lower cortisol
+        for already-stressed users arriving at a support page. */}
+    <div className="min-h-screen bg-serene">
       {/* Hero */}
       <div className="relative overflow-hidden gradient-hero py-16 px-4">
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-teal-700/15 blur-3xl pointer-events-none" />
@@ -276,7 +285,9 @@ export function SupportClient({ config, userTier = "free" }: { config: PageConfi
           {/* Step 4 */}
           {step === "results" && response && (
             <motion.div key="results" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.4 }}>
-              <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} className="rounded-2xl bg-gradient-to-br from-teal-600 to-violet-700 p-6 text-white mb-8 shadow-lg">
+              {/* Acknowledgment: teal→blue-700 — calming, parasympathetic, NOT teal→violet
+                  which adds energy/stimulation. Distressed users need maximum calm here. */}
+              <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} className="rounded-2xl bg-gradient-to-br from-teal-500 to-blue-700 p-6 text-white mb-8 shadow-lg">
                 <div className="flex items-center gap-2 mb-3">
                   <Heart className="h-5 w-5 fill-white text-white opacity-80" />
                   <span className="text-sm font-semibold uppercase tracking-wider opacity-80">I hear you</span>

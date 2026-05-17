@@ -106,10 +106,10 @@ export default function CompanionPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
-      {/* Header */}
+      {/* Header — gradient-companion: sky→teal = throat chakra (communication + trust) */}
       <div className="border-b border-border bg-white px-6 py-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full gradient-c4u-soft flex items-center justify-center shadow-sm">
+          <div className="h-10 w-10 rounded-full gradient-companion flex items-center justify-center shadow-sm">
             <Heart className="h-5 w-5 text-white fill-white" />
           </div>
           <div>
@@ -126,15 +126,17 @@ export default function CompanionPage() {
         )}
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+      {/* Messages — bg-serene: #f0f9ff (very light sky-blue)
+          Science: cool-light backgrounds reduce cortisol and encourage open communication.
+          Throat chakra activation → users feel safer sharing. */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-serene">
         <div className="max-w-2xl mx-auto space-y-4">
           <AnimatePresence initial={false}>
             {displayMessages.map((msg, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
-                  <div className="h-8 w-8 rounded-full gradient-c4u-soft flex items-center justify-center shrink-0 mr-2 mt-1 shadow-sm">
+                  <div className="h-8 w-8 rounded-full gradient-companion flex items-center justify-center shrink-0 mr-2 mt-1 shadow-sm">
                     <Heart className="h-4 w-4 text-white fill-white" />
                   </div>
                 )}

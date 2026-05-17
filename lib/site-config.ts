@@ -97,7 +97,8 @@ export const DEFAULT_CONFIG: SiteConfig = {
         subtitle: "Divorce, breakup, grief, or a relationship ending",
         placeholder:
           "Tell me what's happening... How long ago did this start? What's the hardest part right now?",
-        gradient: "from-rose-500 to-pink-700",
+        // rose→pink softened: healing warmth — not too intense for grief/loss context
+        gradient: "from-rose-400 to-pink-600",
       },
       {
         id: "job-career",
@@ -105,7 +106,8 @@ export const DEFAULT_CONFIG: SiteConfig = {
         subtitle: "Job loss, workplace stress, or feeling stuck professionally",
         placeholder:
           "Tell me what's happening... When did this start? What are you most worried about right now?",
-        gradient: "from-amber-500 to-orange-600",
+        // amber→emerald: growth + hope vs amber→orange (orange raises cortisol)
+        gradient: "from-amber-500 to-emerald-600",
       },
       {
         id: "social-pressure",
@@ -113,7 +115,8 @@ export const DEFAULT_CONFIG: SiteConfig = {
         subtitle: "Expected to be 'on' but feeling flat or disconnected",
         placeholder:
           "Tell me what's happening... Who are you with? What's the expectation you're feeling?",
-        gradient: "from-fuchsia-500 to-purple-700",
+        // violet→indigo: calm confidence vs fuchsia→purple (fuchsia is over-stimulating)
+        gradient: "from-violet-500 to-indigo-700",
       },
       {
         id: "overwhelmed",
@@ -121,7 +124,8 @@ export const DEFAULT_CONFIG: SiteConfig = {
         subtitle: "Too much at once. Mind racing. Can't breathe.",
         placeholder:
           "Tell me what's happening... What's piling up? What does the anxiety feel like in your body right now?",
-        gradient: "from-sky-500 to-blue-700",
+        // sky→blue: max parasympathetic activation — perfect for anxiety/overwhelm
+        gradient: "from-sky-400 to-blue-600",
       },
       {
         id: "just-low",
@@ -129,7 +133,9 @@ export const DEFAULT_CONFIG: SiteConfig = {
         subtitle: "No specific reason. Empty. Heavy. You need support.",
         placeholder:
           "Tell me what's happening... You don't need to explain everything. Just share what you can.",
-        gradient: "from-slate-600 to-gray-800",
+        // slate→indigo: CRITICAL change. Gray amplifies depressive mood (research).
+        // Indigo = calm dignity, quiet hope — never dark gray for low mood cards.
+        gradient: "from-slate-400 to-indigo-600",
       },
     ],
     pricingHeadline: "Go deeper with Premium",

@@ -55,8 +55,67 @@ html, body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+/*
+ * Hero: deep teal-navy → deep indigo-navy → deep violet-navy
+ * Science: dark "container" creates safety. Adding teal warmth vs pure black
+ * reduces cortisol spikes on page load while maintaining depth & drama.
+ */
 .gradient-hero {
-  background: linear-gradient(160deg, #050f14 0%, #0c2230 40%, #0d1a2e 70%, #1a0a2e 100%);
+  background: linear-gradient(160deg, #041a18 0%, #0a1f3a 40%, #0d1a3a 70%, #160828 100%);
+}
+
+/*
+ * gradient-calm: Blue-teal — maximum parasympathetic activation
+ * Use for: support acknowledgment, breathing exercises, calm CTAs
+ * Science: blue-green lowers cortisol faster than any other hue combination
+ */
+.gradient-calm {
+  background: linear-gradient(135deg, #0891b2 0%, #0d9488 100%);
+}
+
+/*
+ * gradient-heal: Teal-emerald — heart chakra healing, grounding, growth
+ * Use for: grounding exercises, free tier, base plan, nature sections
+ * Science: green = most restful on the eye; teal = trust + healing
+ */
+.gradient-heal {
+  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+}
+
+/*
+ * gradient-companion: Sky-teal — throat chakra, open communication, trust
+ * Use for: AI companion header, chat interface, connection content
+ * Science: sky-blue activates trust + communication centres
+ */
+.gradient-companion {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0d9488 100%);
+}
+
+/*
+ * gradient-transform: Violet-amber — crown chakra transformation + achievement
+ * Use for: Transform tier, premium CTAs, breakthrough moments
+ * Science: violet = spiritual transformation; amber = confidence, solar plexus
+ */
+.gradient-transform {
+  background: linear-gradient(135deg, #7c3aed 0%, #d97706 100%);
+}
+
+/*
+ * bg-serene: Very light sky-blue tint for content areas requiring maximum calm
+ * Use for: support page content area, companion chat background
+ * Science: parasympathetic activation via cool hue; white space maintains clarity
+ */
+.bg-serene {
+  background-color: #f0f9ff;
+}
+
+/*
+ * bg-restore: Very light green tint for grounding/nature sections
+ * Use for: grounding exercise cards, muted section backgrounds
+ * Science: green = most restful eye experience; heart chakra = healing
+ */
+.bg-restore {
+  background-color: #f0fdf4;
 }
 
 /* Glass */

@@ -46,10 +46,14 @@ function getHeroCopy(gender: string, age: string) {
 }
 
 const TIER_ICONS = [Zap, Star, Crown];
+// Tier gradients — colour psychology optimised:
+// Base: teal→emerald = healing, growth, heart chakra (entry to healing journey)
+// Plus: violet→indigo = transformation, crown→third-eye (deeper journey, most popular)
+// Transform: amber→violet = solar plexus confidence + crown transformation (achievement)
 const TIER_GRADIENTS = [
   "from-teal-500 to-emerald-600",
-  "from-violet-500 to-purple-700",
-  "from-amber-500 to-orange-600",
+  "from-violet-500 to-indigo-700",
+  "from-amber-500 to-violet-700",
 ];
 
 const FREE_FEATURES = [
