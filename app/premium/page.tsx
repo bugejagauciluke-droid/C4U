@@ -4,6 +4,46 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { readSiteConfig } from "@/lib/site-config";
 import { CheckoutButton } from "./checkout-button";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+
+async function getUserProfile() {
+  try {
+    const { userId } = await auth();
+    if (!userId) return { gender: "unknown", age: "unknown" };
+    const clerk = await clerkClient();
+    const user = await clerk.users.getUser(userId);
+    const meta = (user.unsafeMetadata ?? {}) as Record<string, string>;
+    return { gender: meta.gender ?? "unknown", age: meta.ageRange ?? "unknown" };
+  } catch { return { gender: "unknown", age: "unknown" }; }
+}
+
+function getHeroCopy(gender: string, age: string) {
+  if (gender === "man") return {
+    headline: "The tools that actually work.",
+    sub: "Direct. Practical. No fluff. C4U gives you what you need to get through hard times and come out stronger.",
+    cta: "Start winning back control",
+  };
+  if (gender === "woman") return {
+    headline: "A safe space that grows with you.",
+    sub: "Feel truly supported, understood, and empowered — at every stage of what you're going through.",
+    cta: "Start your transformation",
+  };
+  if (age === "18-25") return {
+    headline: "Built for people who take their mental health seriously.",
+    sub: "Real support, real tools, real results. Start free — upgrade when you're ready.",
+    cta: "Join thousands feeling better",
+  };
+  if (age === "50+") return {
+    headline: "Proven support. Genuine care.",
+    sub: "Evidence-based tools and a compassionate companion — available whenever you need them, with no commitment.",
+    cta: "Start with no risk",
+  };
+  return {
+    headline: "Start free. Grow when you're ready.",
+    sub: "7-day free trial on all paid plans. Cancel anytime. No hidden fees.",
+    cta: "Choose your plan",
+  };
+}
 
 const TIER_ICONS = [Zap, Star, Crown];
 const TIER_GRADIENTS = [
@@ -18,9 +58,11 @@ const FREE_FEATURES = [
   "No account or sign-up needed",
 ];
 
-export default function PremiumPage() {
+export default async function PremiumPage() {
   const { subscription } = readSiteConfig();
-  const { tiers, freeTrialText, footerNote } = subscription;
+  const { tiers, footerNote } = subscription;
+  const { gender, age } = await getUserProfile();
+  const hero = getHeroCopy(gender, age);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-20">
@@ -30,10 +72,9 @@ export default function PremiumPage() {
           <Sparkles className="h-3.5 w-3.5 mr-1" /> Choose your plan
         </Badge>
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Start free.<br />
-          <span className="gradient-text">Grow when you&apos;re ready.</span>
+          <span className="gradient-text">{hero.headline}</span>
         </h1>
-        <p className="text-muted-foreground text-lg max-w-xl mx-auto">{freeTrialText}</p>
+        <p className="text-muted-foreground text-lg max-w-xl mx-auto">{hero.sub}</p>
       </div>
 
       {/* Pricing grid */}
