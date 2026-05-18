@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, HandHeart, LayoutDashboard, Sparkles, Menu, X, User } from "lucide-react";
+import { Heart, HandHeart, LayoutDashboard, Sparkles, Menu, X, User, Building2 } from "lucide-react";
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 const NAV = [
-  { href: "/support",   label: "Get Support", Icon: HandHeart,      highlight: true  },
-  { href: "/premium",   label: "Premium",     Icon: Sparkles,       highlight: false },
-  { href: "/dashboard", label: "Dashboard",   Icon: LayoutDashboard,highlight: false },
+  { href: "/support",    label: "Get Support", Icon: HandHeart,       highlight: true  },
+  { href: "/premium",    label: "Premium",     Icon: Sparkles,        highlight: false },
+  { href: "/enterprise", label: "For Teams",   Icon: Building2,       highlight: false },
+  { href: "/dashboard",  label: "Dashboard",   Icon: LayoutDashboard, highlight: false },
 ];
 
 export function Navbar({ appName = "C4U" }: { appName?: string }) {

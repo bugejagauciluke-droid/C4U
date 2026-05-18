@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   ArrowRight, Heart, Shield, Sparkles, Users, Headphones,
   Music, MessageCircle, Star, CheckCircle, HandHeart,
-  Wind, Anchor, Activity, Brain,
+  Wind, Anchor, Activity, Brain, Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -254,6 +254,49 @@ export default function LandingPage() {
             <Link href="/premium">
               <Button variant="dark" size="lg">See Premium plans <ArrowRight className="h-4 w-4" /></Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOR TEAMS ────────────────────────────────────────────── */}
+      <section className="py-20 px-4 bg-slate-900">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1">
+            <Badge className="mb-4 bg-white/10 text-white border-white/20">
+              <Building2 className="h-3.5 w-3.5 mr-1.5" /> C4U for Teams
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Does your team need this?
+            </h2>
+            <p className="text-white/65 text-lg mb-6">
+              Mental health problems cost employers an average of €1,913 per employee per year. C4U for Teams gives every person in your organisation private, always-available support — at less than a coffee a week per person.
+            </p>
+            <div className="flex flex-wrap gap-3 mb-8">
+              {["Anonymous wellness dashboard", "Employee invite system", "Custom focus areas", "Monthly reports"].map(f => (
+                <span key={f} className="flex items-center gap-1.5 text-sm text-teal-300 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
+                  <CheckCircle className="h-3.5 w-3.5" /> {f}
+                </span>
+              ))}
+            </div>
+            <Link href="/enterprise">
+              <Button className="bg-white text-slate-900 hover:bg-white/90 font-bold" size="lg">
+                Explore C4U for Teams <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+          <div className="flex-shrink-0 hidden md:block">
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-4 min-w-[220px]">
+              {[
+                { label: "Avg engagement", value: "73%", color: "text-teal-400" },
+                { label: "Burnout reduction", value: "−40%", color: "text-emerald-400" },
+                { label: "ROI", value: "5×", color: "text-amber-400" },
+              ].map(({ label, value, color }) => (
+                <div key={label}>
+                  <p className={`text-3xl font-black ${color}`}>{value}</p>
+                  <p className="text-white/50 text-xs">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
