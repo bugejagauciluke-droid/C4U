@@ -192,51 +192,40 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FREE VS PREMIUM ──────────────────────────────────────── */}
+      {/* ── TRIAL CTA ────────────────────────────────────────────── */}
       <section className="py-24 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            Free forever. <span className="gradient-text">Go deeper with Premium.</span>
+        <div className="max-w-3xl mx-auto text-center">
+          <Badge variant="gold" className="mb-5 px-4 py-1">
+            <Sparkles className="h-3.5 w-3.5 mr-1" /> 7-day free trial
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Try everything. <span className="gradient-text">Free for 7 days.</span>
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-2xl border border-border bg-white p-7">
-              <Badge variant="green" className="mb-4">Free — always</Badge>
-              <h3 className="text-xl font-bold mb-1">Immediate support</h3>
-              <p className="text-sm text-muted-foreground mb-5">No sign-up needed. Just open C4U and get help.</p>
-              <ul className="space-y-2.5 mb-6">
-                {["AI-powered exercise recommendations", "All 6 situation types", "4–5 personalised exercises per session", "Breathing, grounding, mindset & more"].map(f => (
+          <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
+            Full access to every C4U feature — meditations, music, AI companion, daily challenges, 7-day plans. No charge until your trial ends.
+          </p>
+          <div className="rounded-2xl p-[2px] shadow-xl inline-block w-full max-w-md" style={{ background: "linear-gradient(135deg, #0d9488, #7c3aed)" }}>
+            <div className="bg-white rounded-[14px] p-7">
+              <ul className="space-y-2.5 mb-6 text-left">
+                {(subscription.tiers[1]?.features ?? subscription.tiers[0]?.features ?? []).map(f => (
                   <li key={f} className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="h-4 w-4 text-teal-500 shrink-0" />{f}
+                    <CheckCircle className="h-4 w-4 text-violet-500 shrink-0" />{f}
                   </li>
                 ))}
               </ul>
-              <Link href="/support">
-                <Button variant="outline" className="w-full">Get free support now</Button>
+              <Link href="/premium">
+                <Button variant="gradient" className="w-full" size="lg">
+                  Start free trial <ArrowRight className="h-4 w-4" />
+                </Button>
               </Link>
-            </div>
-
-            <div className="rounded-2xl p-[2px] shadow-lg" style={{ background: "linear-gradient(135deg, #0d9488, #7c3aed)" }}>
-              <div className="bg-white rounded-[14px] p-7 h-full">
-                <Badge variant="purple" className="mb-4">
-                  <Sparkles className="h-3 w-3 mr-1" /> Premium — from €{subscription.tiers[0]?.price}/mo
-                </Badge>
-                <h3 className="text-xl font-bold mb-1">Deeper healing</h3>
-                <p className="text-sm text-muted-foreground mb-5">{subscription.freeTrialText}</p>
-                <ul className="space-y-2.5 mb-6">
-                  {(subscription.tiers[1]?.features ?? subscription.tiers[0]?.features ?? []).map(f => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-violet-500 shrink-0" />{f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/premium">
-                  <Button variant="gradient" className="w-full">
-                    Unlock Premium <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
+              <p className="text-xs text-muted-foreground mt-3 text-center">
+                From €{subscription.tiers[0]?.price}/month after trial · Cancel anytime
+              </p>
             </div>
           </div>
+          <p className="text-xs text-muted-foreground mt-5">
+            Free trial is limited to one per account and device. Automatic payments begin after trial ends.
+          </p>
         </div>
       </section>
 

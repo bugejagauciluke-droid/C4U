@@ -3,8 +3,8 @@ export type Tier = "free" | "base" | "plus" | "transform";
 export const TIER_FEATURES: Record<Tier, string[]> = {
   free:      [],
   base:      ["meditations", "music"],
-  plus:      ["meditations", "music", "companion"],
-  transform: ["meditations", "music", "companion", "plans"],
+  plus:      ["meditations", "music", "companion", "challenge"],
+  transform: ["meditations", "music", "companion", "plans", "challenge"],
 };
 
 export function hasFeature(tier: Tier, feature: string): boolean {

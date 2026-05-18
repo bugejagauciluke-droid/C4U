@@ -6,15 +6,31 @@ import type { Tier } from "@/lib/subscription";
 
 async function setUserTier(clerkUserId: string, tier: Tier, stripeCustomerId: string, stripeSubscriptionId: string) {
   const clerk = await clerkClient();
+  const user = await clerk.users.getUser(clerkUserId);
+  const existing = (user.privateMetadata ?? {}) as Record<string, unknown>;
   await clerk.users.updateUserMetadata(clerkUserId, {
-    privateMetadata: { tier, stripeCustomerId, stripeSubscriptionId },
+    privateMetadata: {
+      ...existing,
+      tier,
+      stripeCustomerId,
+      stripeSubscriptionId,
+      trialUsed: true, // Trial is considered used once a subscription is active
+    },
   });
 }
 
 async function clearUserTier(clerkUserId: string) {
   const clerk = await clerkClient();
+  const user = await clerk.users.getUser(clerkUserId);
+  const existing = (user.privateMetadata ?? {}) as Record<string, unknown>;
   await clerk.users.updateUserMetadata(clerkUserId, {
-    privateMetadata: { tier: "free", stripeCustomerId: undefined, stripeSubscriptionId: undefined },
+    privateMetadata: {
+      ...existing,
+      tier: "free",
+      stripeCustomerId: undefined,
+      stripeSubscriptionId: undefined,
+      // trialUsed stays true — trial was already consumed
+    },
   });
 }
 

@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { getUserTier } from "@/lib/subscription";
-import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight } from "lucide-react";
+import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV = [
-  { href: "/account/meditations", label: "Meditations",  Icon: Headphones, feature: "base"      },
-  { href: "/account/music",       label: "Music",         Icon: Music,       feature: "base"      },
-  { href: "/account/companion",   label: "AI Companion",  Icon: MessageCircle,feature: "plus"     },
-  { href: "/account/plans",       label: "7-Day Plans",   Icon: Star,        feature: "transform" },
+  { href: "/account/meditations", label: "Meditations",      Icon: Headphones,     feature: "base"      },
+  { href: "/account/music",       label: "Music",             Icon: Music,           feature: "base"      },
+  { href: "/account/companion",   label: "AI Companion",      Icon: MessageCircle,   feature: "plus"      },
+  { href: "/account/challenge",   label: "Daily Challenge",   Icon: Zap,             feature: "plus"      },
+  { href: "/account/plans",       label: "7-Day Plans",       Icon: Star,            feature: "transform" },
 ];
 
 const TIER_ORDER = ["free", "base", "plus", "transform"];
