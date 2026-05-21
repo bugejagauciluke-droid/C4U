@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getUserTier } from "@/lib/subscription";
-import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight, Zap } from "lucide-react";
+import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight, Zap, BookOpen, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV = [
@@ -9,6 +9,8 @@ const NAV = [
   { href: "/account/companion",   label: "AI Companion",      Icon: MessageCircle,   feature: "plus"      },
   { href: "/account/challenge",   label: "Daily Challenge",   Icon: Zap,             feature: "plus"      },
   { href: "/account/plans",       label: "7-Day Plans",       Icon: Star,            feature: "transform" },
+  { href: "/account/diary",       label: "Daily Diary",       Icon: BookOpen,        feature: "transform" },
+  { href: "/account/goals",       label: "Life Goals",        Icon: Target,          feature: "transform" },
 ];
 
 const TIER_ORDER = ["free", "base", "plus", "transform"];

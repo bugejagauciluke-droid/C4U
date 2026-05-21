@@ -160,6 +160,9 @@ export default async function PremiumPage() {
           { feature: "Daily Challenge",             base: false, plus: true,  transform: true  },
           { feature: "AI remembers your story",     base: false, plus: true,  transform: true  },
           { feature: "7-day support plans",         base: false, plus: false, transform: true  },
+          { feature: "Daily Diary + AI insights",   base: false, plus: false, transform: true  },
+          { feature: "Life Goals & roadmap",        base: false, plus: false, transform: true  },
+          { feature: "Weekly life review letter",   base: false, plus: false, transform: true  },
           { feature: "Priority support",            base: false, plus: false, transform: true  },
         ].map((row, i) => (
           <div key={row.feature} className={`grid grid-cols-4 px-6 py-3.5 text-sm border-b border-border/50 last:border-0 ${i % 2 === 0 ? "" : "bg-muted/20"}`}>
