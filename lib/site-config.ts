@@ -152,7 +152,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
           "8 guided meditations (grief, anxiety, sleep & more)",
           "Healing & focus music library",
           "New content added every week",
-          "6 emotional support situations",
+          "AI support — type anything, get help instantly",
           "Always-on crisis resources",
         ],
       },

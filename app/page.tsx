@@ -1,177 +1,122 @@
 import Link from "next/link";
 import {
-  ArrowRight, Heart, Shield, Sparkles, Users, Headphones,
-  Music, MessageCircle, Star, CheckCircle, HandHeart,
-  Wind, Anchor, Activity, Brain, Building2,
+  ArrowRight, Heart, Sparkles, Headphones, Music,
+  MessageCircle, Star, CheckCircle, Building2, BookOpen,
+  Target, Zap, Crown, Shield,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { readSiteConfig } from "@/lib/site-config";
-
-// Situation gradients are colour-psychology optimised:
-// "Job loss" changed amber→orange to amber→emerald (growth, not cortisol-raising orange)
-// "Social anxiety" changed fuchsia→purple to violet→indigo (calm confidence, not stimulating fuchsia)
-// "Just feeling low" changed slate→gray to slate→indigo (gray amplifies depression; indigo = calm dignity + hope)
-const SITUATIONS = [
-  { label: "Lonely in a crowd",    gradient: "from-indigo-500 to-violet-600"  },
-  { label: "Going through divorce", gradient: "from-rose-400 to-pink-600"     },
-  { label: "Job loss or career stress", gradient: "from-amber-500 to-emerald-600" },
-  { label: "Social anxiety",       gradient: "from-violet-500 to-indigo-700"  },
-  { label: "Overwhelmed & burnt out", gradient: "from-sky-400 to-blue-600"   },
-  { label: "Just feeling low",     gradient: "from-slate-400 to-indigo-600"   },
-];
-
-// Pill colours: soft/pastel versions only — research shows high saturation causes overstimulation
-// in already-stressed users. Pastel = emotional stability signal.
-const EXERCISE_TYPES = [
-  { Icon: Wind,     label: "Breathing",   color: "text-sky-700 bg-sky-50 border border-sky-100"       },
-  { Icon: Anchor,   label: "Grounding",   color: "text-teal-700 bg-teal-50 border border-teal-100"    },
-  { Icon: Users,    label: "Connection",  color: "text-rose-600 bg-rose-50 border border-rose-100"    },
-  { Icon: Activity, label: "Movement",    color: "text-amber-700 bg-amber-50 border border-amber-100" },
-  { Icon: Brain,    label: "Mindset",     color: "text-violet-700 bg-violet-50 border border-violet-100" },
-];
-
-// Premium features: colour-optimised gradients
-// Meditations: indigo→violet (introspection, spiritual depth)
-// Music: rose→pink SOFTENED (love, warmth — not too intense)
-// Companion: sky→teal (throat chakra: communication + trust)
-// 7-Day Plan: amber→violet (achievement + transformation, NOT amber→orange which raises cortisol)
-const PREMIUM_FEATURES = [
-  { Icon: Headphones, title: "Guided Meditations", desc: "10-minute audio meditations for your exact situation", gradient: "from-indigo-500 to-violet-600" },
-  { Icon: Music, title: "Healing Music", desc: "Curated playlists: calm, focus, confidence, sleep", gradient: "from-rose-400 to-pink-600" },
-  { Icon: MessageCircle, title: "AI Companion", desc: "Extended memory-enabled conversations with a companion who knows you", gradient: "from-sky-500 to-teal-600" },
-  { Icon: Star, title: "7-Day Support Plan", desc: "A personalised daily plan to rebuild calm, confidence, and connection", gradient: "from-amber-400 to-violet-600" },
-];
+import { HeroChat } from "@/components/hero-chat";
 
 const TESTIMONIALS = [
   {
     quote: "I was at my friend's birthday feeling invisible. C4U gave me three things to do right there at the party. Within 20 minutes I actually felt present.",
     name: "Sarah M.",
-    context: "Single mum, felt lonely at a social event",
+    context: "Felt alone in a crowd",
   },
   {
-    quote: "Going through divorce is the hardest thing I've ever done. C4U was there at 2am when I couldn't sleep and didn't want to wake anyone up.",
+    quote: "Going through the worst period of my life. C4U was there at 2am when I couldn't sleep and didn't want to wake anyone up. It actually listened.",
     name: "James T.",
     context: "Going through divorce",
   },
   {
-    quote: "Lost my job after 12 years. C4U helped me stay grounded while I figured out next steps. The exercises actually work.",
+    quote: "I typed out everything I was feeling and it came back with exactly what I needed. Not generic advice — it felt personal. I cried a little, honestly.",
     name: "Maria L.",
-    context: "Recovering from sudden job loss",
+    context: "Burnout and job loss",
   },
 ];
 
+const WHAT_YOU_GET = [
+  {
+    Icon: Headphones,
+    title: "Guided meditations",
+    desc: "8 sessions built for grief, anxiety, sleep, overwhelm, and more. Each one clinically designed — not generic wellness filler.",
+    tier: "Base",
+    gradient: "from-indigo-500 to-violet-600",
+  },
+  {
+    Icon: Music,
+    title: "Healing music",
+    desc: "Curated tracks for sleep, focus, calm, and emotional processing. Something new every week.",
+    tier: "Base",
+    gradient: "from-rose-400 to-pink-600",
+  },
+  {
+    Icon: MessageCircle,
+    title: "AI Companion",
+    desc: "Unlimited, 24/7. Voice mode. Remembers everything. Responds like a caring person who actually knows you — not a bot.",
+    tier: "Plus",
+    gradient: "from-sky-500 to-teal-600",
+  },
+  {
+    Icon: Zap,
+    title: "Daily Challenge",
+    desc: "One personalised mission per day built from your actual life. 'Call Marco today'. 'Say what you've been holding back.' Streak tracking included.",
+    tier: "Plus",
+    gradient: "from-amber-400 to-orange-500",
+  },
+  {
+    Icon: BookOpen,
+    title: "Daily Diary",
+    desc: "Private journal with AI analysis. Track mood, sleep, food, digital habits, social life. The AI spots patterns you'd never notice yourself.",
+    tier: "Transform",
+    gradient: "from-teal-500 to-emerald-600",
+  },
+  {
+    Icon: Target,
+    title: "Life Goals & Roadmap",
+    desc: "Tell C4U what you want. It builds a full plan — hourly habits, daily tasks, weekly milestones, monthly targets, yearly identity shift. Weekly review letter included.",
+    tier: "Transform",
+    gradient: "from-violet-500 to-indigo-700",
+  },
+];
+
+const TIER_COLORS: Record<string, string> = {
+  Base: "bg-teal-100 text-teal-700",
+  Plus: "bg-violet-100 text-violet-700",
+  Transform: "bg-amber-100 text-amber-700",
+};
+
 export default function LandingPage() {
-  const { branding, landing, subscription } = readSiteConfig();
+  const { branding, subscription } = readSiteConfig();
 
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden gradient-hero py-28 px-4">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-teal-700/10 blur-3xl pointer-events-none" />
+      {/* ── HERO — full screen, chat-first ──────────────────────────────── */}
+      <section className="relative min-h-[100svh] gradient-hero flex flex-col items-center justify-center px-4 pt-8 pb-16 overflow-hidden">
+        {/* Ambient glows */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-teal-700/15 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-20 -left-40 w-[500px] h-[500px] rounded-full bg-violet-700/10 blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-3xl mx-auto text-center">
-          <Badge variant="teal" className="mb-6 px-4 py-1 text-xs">
-            <Shield className="h-3 w-3 mr-1.5" /> {branding.heroBadge}
-          </Badge>
-
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight tracking-tight">
-            {landing.heroHeadline.includes("alone") ? (
-              <>
-                {landing.heroHeadline.split("alone")[0]}
-                <span className="bg-gradient-to-r from-teal-300 to-violet-300 bg-clip-text text-transparent">
-                  alone.
-                </span>
-              </>
-            ) : (
-              landing.heroHeadline
-            )}
-          </h1>
-
-          <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
-            {landing.heroSubtitle}
-          </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/support">
-              <Button variant="gradient" size="lg" className="text-base shadow-xl shadow-teal-900/30">
-                {landing.ctaPrimary} <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-            <a href="#how-it-works">
-              <Button variant="dark" size="lg" className="text-base">
-                {landing.ctaSecondary}
-              </Button>
-            </a>
+        <div className="relative w-full max-w-2xl mx-auto text-center space-y-8">
+          {/* Wordmark */}
+          <div className="flex items-center justify-center gap-2">
+            <span className="h-8 w-8 rounded-full gradient-c4u-soft flex items-center justify-center shadow-md">
+              <Heart className="h-4 w-4 text-white fill-white" />
+            </span>
+            <span className="text-white font-bold text-xl tracking-tight">{branding.appName}</span>
           </div>
-          <p className="mt-5 text-sm text-white/40">No sign-up. No credit card. Works right now.</p>
+
+          {/* Headline */}
+          <div>
+            <h1 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tight">
+              Whatever you&apos;re carrying,<br />
+              <span className="bg-gradient-to-r from-teal-300 to-violet-300 bg-clip-text text-transparent">
+                you don&apos;t have to carry it alone.
+              </span>
+            </h1>
+            <p className="mt-4 text-white/55 text-lg md:text-xl">
+              Tell C4U what&apos;s going on. Right now. No forms, no sign-up.
+            </p>
+          </div>
+
+          {/* The chat — the hero IS the input */}
+          <HeroChat />
         </div>
       </section>
 
-      {/* ── SITUATION CHIPS ──────────────────────────────────────── */}
-      <section className="bg-white border-b border-border py-10 px-4">
-        <p className="text-center text-xs uppercase tracking-widest font-bold text-muted-foreground mb-6">
-          C4U helps with
-        </p>
-        <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-          {SITUATIONS.map((s) => (
-            <Link key={s.label} href="/support">
-              <div className={`rounded-full text-white text-sm font-semibold px-5 py-2 bg-gradient-to-r ${s.gradient} hover:opacity-90 transition-opacity shadow-sm`}>
-                {s.label}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ─────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-24 px-4 bg-muted/40">
-        <div className="max-w-4xl mx-auto text-center">
-          <Badge variant="teal" className="mb-4">{landing.howItWorksTitle}</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-16">
-            Support in <span className="gradient-text">minutes, not days.</span>
-          </h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            {landing.steps.map((step, i) => (
-              <div key={i}>
-                <div className="h-14 w-14 rounded-2xl gradient-c4u-soft text-white text-2xl font-black flex items-center justify-center mx-auto mb-5 shadow-md">
-                  {i + 1}
-                </div>
-                <h3 className="text-lg font-bold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12">
-            <Link href="/support">
-              <Button variant="gradient" size="lg">
-                <HandHeart className="h-5 w-5" /> Try it now — free
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── EXERCISE TYPES ───────────────────────────────────────── */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What kind of exercises?</h2>
-          <p className="text-muted-foreground mb-12 max-w-xl mx-auto">
-            C4U picks from five types of proven technique — matched to your exact situation.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {EXERCISE_TYPES.map((t) => (
-              <div key={t.label} className={`flex items-center gap-2 px-5 py-3 rounded-full ${t.color} font-semibold text-sm`}>
-                <t.Icon className="h-4 w-4" />{t.label}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ─────────────────────────────────────────── */}
-      {/* Testimonials: teal-50→white→sky-50 — cool tones signal safety + trust */}
+      {/* ── TESTIMONIALS ──────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-gradient-to-br from-teal-50 via-white to-sky-50 border-y border-border">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
@@ -183,7 +128,7 @@ export default function LandingPage() {
                 <div className="flex mb-3">
                   {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />)}
                 </div>
-                <p className="text-sm leading-relaxed italic mb-4">"{t.quote}"</p>
+                <p className="text-sm leading-relaxed italic mb-4 text-gray-700">&ldquo;{t.quote}&rdquo;</p>
                 <p className="font-semibold text-sm">{t.name}</p>
                 <p className="text-xs text-muted-foreground">{t.context}</p>
               </div>
@@ -192,73 +137,60 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── TRIAL CTA ────────────────────────────────────────────── */}
+      {/* ── WHAT YOU GET ──────────────────────────────────────────────────── */}
       <section className="py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <Badge variant="gold" className="mb-5 px-4 py-1">
-            <Sparkles className="h-3.5 w-3.5 mr-1" /> 7-day free trial
-          </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Try everything. <span className="gradient-text">Free for 7 days.</span>
-          </h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
-            Full access to every C4U feature — meditations, music, AI companion, daily challenges, 7-day plans. No charge until your trial ends.
-          </p>
-          <div className="rounded-2xl p-[2px] shadow-xl inline-block w-full max-w-md" style={{ background: "linear-gradient(135deg, #0d9488, #7c3aed)" }}>
-            <div className="bg-white rounded-[14px] p-7">
-              <ul className="space-y-2.5 mb-6 text-left">
-                {(subscription.tiers[1]?.features ?? subscription.tiers[0]?.features ?? []).map(f => (
-                  <li key={f} className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="h-4 w-4 text-violet-500 shrink-0" />{f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/premium">
-                <Button variant="gradient" className="w-full" size="lg">
-                  Start free trial <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <p className="text-xs text-muted-foreground mt-3 text-center">
-                From €{subscription.tiers[0]?.price}/month after trial · Cancel anytime
-              </p>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground mt-5">
-            Free trial is limited to one per account and device. Automatic payments begin after trial ends.
-          </p>
-        </div>
-      </section>
-
-      {/* ── PREMIUM FEATURES ─────────────────────────────────────── */}
-      <section className="py-20 px-4 gradient-hero">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <Badge variant="gold" className="mb-4"><Sparkles className="h-3 w-3 mr-1" /> Premium</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">Everything you need to heal</h2>
+          <div className="text-center mb-14">
+            <Badge variant="gold" className="mb-4 px-4 py-1">
+              <Sparkles className="h-3.5 w-3.5 mr-1" /> Premium — 7 days free
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Go deeper. <span className="gradient-text">Unlock everything.</span>
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              The free support you just tried is just the beginning. Premium gives you a companion who knows you, a daily challenge built from your life, and a roadmap to become who you want to be.
+            </p>
           </div>
-          <div className="grid sm:grid-cols-2 gap-5">
-            {PREMIUM_FEATURES.map((f) => (
-              <div key={f.title} className="relative rounded-2xl overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${f.gradient} opacity-85`} />
-                <div className="relative p-6 text-white">
-                  <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
-                    <f.Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="font-bold text-lg mb-1">{f.title}</h3>
-                  <p className="text-sm text-white/80">{f.desc}</p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+            {WHAT_YOU_GET.map((f) => (
+              <div key={f.title} className="bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-shadow">
+                <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4 shadow-sm`}>
+                  <f.Icon className="h-5 w-5 text-white" />
                 </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-bold text-base">{f.title}</h3>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TIER_COLORS[f.tier]}`}>{f.tier}</span>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
-          <div className="text-center mt-10">
-            <Link href="/premium">
-              <Button variant="dark" size="lg">See Premium plans <ArrowRight className="h-4 w-4" /></Button>
-            </Link>
+
+          {/* Trial CTA */}
+          <div className="max-w-md mx-auto text-center">
+            <div className="rounded-2xl p-[2px] shadow-xl" style={{ background: "linear-gradient(135deg, #0d9488, #7c3aed)" }}>
+              <div className="bg-white rounded-[14px] p-7">
+                <p className="font-bold text-lg mb-1">Start free — 7 days, everything unlocked</p>
+                <p className="text-sm text-muted-foreground mb-5">Full Transform access. No charge until your trial ends.</p>
+                <Link href="/premium">
+                  <Button variant="gradient" className="w-full" size="lg">
+                    See plans & start free trial <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <p className="text-xs text-muted-foreground mt-3">
+                  From €{subscription.tiers[0]?.price}/month after trial · Cancel anytime
+                </p>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              One trial per account and device. Auto-billing begins when trial ends.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── FOR TEAMS ────────────────────────────────────────────── */}
+      {/* ── FOR TEAMS ─────────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-slate-900">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1">
@@ -269,7 +201,7 @@ export default function LandingPage() {
               Does your team need this?
             </h2>
             <p className="text-white/65 text-lg mb-6">
-              Mental health problems cost employers an average of €1,913 per employee per year. C4U for Teams gives every person in your organisation private, always-available support — at less than a coffee a week per person.
+              Burnout, absenteeism, quiet quitting — most of it traces back to untreated mental health. C4U for Teams gives every employee private, always-available support for less than a coffee a week per person.
             </p>
             <div className="flex flex-wrap gap-3 mb-8">
               {["Anonymous wellness dashboard", "Employee invite system", "Custom focus areas", "Monthly reports"].map(f => (
@@ -301,7 +233,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ────────────────────────────────────────────── */}
+      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <section className="py-24 px-4 text-center">
         <div className="max-w-2xl mx-auto">
           <Heart className="h-12 w-12 mx-auto text-primary mb-6 fill-primary" />
@@ -310,19 +242,20 @@ export default function LandingPage() {
             <span className="gradient-text">That takes courage.</span>
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
-            C4U is here — right now, free, no sign-up needed.
+            C4U is here — right now, no sign-up needed. Just type.
           </p>
           <div className="mt-8">
-            <Link href="/support">
-              <Button variant="gradient" size="lg" className="text-base shadow-xl shadow-teal-200">
-                <HandHeart className="h-5 w-5" /> Get support now
-              </Button>
-            </Link>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-teal-500 to-violet-600 text-white font-bold text-base shadow-xl hover:opacity-90 transition-opacity"
+            >
+              <Heart className="h-5 w-5 fill-white" /> Talk to C4U now
+            </button>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────────── */}
+      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
         <p className="font-bold gradient-text text-base mb-1">{branding.appName}</p>
         <p>{branding.footerText}</p>

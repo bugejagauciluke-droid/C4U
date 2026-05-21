@@ -82,11 +82,11 @@ const TIER_FEATURES_DETAIL = [
         ],
       },
       {
-        heading: "Support",
+        heading: "Always-on support",
         Icon: Heart,
         features: [
-          { name: "6 emotional situation types", detail: "Loneliness, heartbreak, work stress, social pressure, overwhelm, and low mood" },
-          { name: "Crisis text line always visible", detail: "741741, 112, and Befrienders.org accessible from every page" },
+          { name: "Type anything — get help instantly", detail: "No categories to choose, no forms to fill. Just write what's going on and receive personalised exercises within seconds." },
+          { name: "Crisis resources always visible", detail: "741741, 112, and Befrienders.org accessible from every page, always." },
         ],
       },
     ],
@@ -203,9 +203,9 @@ const TIER_FEATURES_DETAIL = [
 // ── Full comparison table ──────────────────────────────────────────────────────
 const COMPARISON = [
   // Free (always available)
-  { feature: "AI-powered support exercises",       free: true,  base: true,  plus: true,  transform: true,  note: "" },
-  { feature: "6 emotional situation types",        free: true,  base: true,  plus: true,  transform: true,  note: "" },
-  { feature: "Crisis resources always visible",    free: true,  base: true,  plus: true,  transform: true,  note: "" },
+  { feature: "AI-powered support — type anything, get help now", free: true,  base: true,  plus: true,  transform: true,  note: "" },
+  { feature: "Personalised exercises for your exact moment",     free: true,  base: true,  plus: true,  transform: true,  note: "" },
+  { feature: "Crisis resources always visible",                  free: true,  base: true,  plus: true,  transform: true,  note: "" },
   // Base
   { feature: "Guided meditations (8 sessions)",   free: false, base: true,  plus: true,  transform: true,  note: "" },
   { feature: "Healing & focus music library",     free: false, base: true,  plus: true,  transform: true,  note: "" },

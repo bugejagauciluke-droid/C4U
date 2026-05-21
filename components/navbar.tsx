@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 const NAV = [
-  { href: "/support",    label: "Get Support", Icon: HandHeart,       highlight: true  },
+  { href: "/",           label: "Talk to C4U", Icon: HandHeart,       highlight: true  },
   { href: "/premium",    label: "Premium",     Icon: Sparkles,        highlight: false },
   { href: "/enterprise", label: "For Teams",   Icon: Building2,       highlight: false },
   { href: "/dashboard",  label: "Dashboard",   Icon: LayoutDashboard, highlight: false },
@@ -62,8 +62,8 @@ export function Navbar({ appName = "C4U" }: { appName?: string }) {
               <SignInButton mode="modal" fallbackRedirectUrl="/onboarding">
                 <Button variant="outline" size="sm">Sign in</Button>
               </SignInButton>
-              <Link href="/support">
-                <Button variant="soft" size="sm">I need support now</Button>
+              <Link href="/">
+                <Button variant="soft" size="sm">Talk to C4U now</Button>
               </Link>
             </>
           )}
