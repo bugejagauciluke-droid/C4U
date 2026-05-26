@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
+import { checkRateLimit, getClientId, validatePayload } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -33,10 +34,20 @@ const FALLBACK_RESPONSE = {
 };
 
 export async function POST(req: NextRequest) {
+  const clientId = getClientId(req);
+  const rl = checkRateLimit(clientId, "diary");
+  if (!rl.ok) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
+  }
+
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
-  const entry: DiaryEntry = await req.json();
+  const body = await req.json();
+  const validationError = validatePayload(body, "diary");
+  if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
+
+  const entry: DiaryEntry = body;
 
   if (!isConfigured()) return NextResponse.json(FALLBACK_RESPONSE);
 

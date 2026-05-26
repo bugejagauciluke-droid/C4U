@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
+import { checkRateLimit, getClientId, validatePayload } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -88,6 +89,7 @@ Return ONLY valid JSON (no markdown, no code fences, no explanation):
   ],
   "closingMessage": "End like a real person ending a real conversation. Warm, specific to them, genuine. Mention one C4U feature naturally if it fits. 2-3 sentences."
 }`;
+}
 
 function extractJSON(text: string) {
   const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
@@ -131,11 +133,22 @@ const FALLBACK = {
 };
 
 export async function POST(req: NextRequest) {
+  // Rate limit
+  const clientId = getClientId(req);
+  const rl = checkRateLimit(clientId, "support");
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } },
+    );
+  }
+
   try {
-    const { situation, details } = (await req.json()) as {
-      situation: string;
-      details: string;
-    };
+    const body = await req.json();
+    const validationError = validatePayload(body, "support");
+    if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
+
+    const { situation, details } = body as { situation: string; details: string };
 
     if (!details?.trim()) {
       return NextResponse.json({ error: "Please share what you're feeling." }, { status: 400 });

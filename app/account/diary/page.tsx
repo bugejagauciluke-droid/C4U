@@ -250,7 +250,7 @@ export default function DiaryPage() {
                   ].map(({ key, label, Icon, placeholder, color }) => (
                     <div key={key} className="mt-4">
                       <label className={`text-xs font-medium flex items-center gap-1.5 mb-1.5 ${color}`}><Icon className="h-3.5 w-3.5" />{label}</label>
-                      <textarea rows={2} value={(entry as Record<string, unknown>)[key] as string} onChange={e => update(key as keyof DiaryEntry, e.target.value)} disabled={submitted && viewDate !== today()} placeholder={placeholder} className="w-full text-sm text-gray-700 resize-none focus:outline-none border border-border rounded-xl px-3 py-2 placeholder-gray-300 focus:ring-2 focus:ring-teal-300" />
+                      <textarea rows={2} value={(entry as unknown as Record<string, string>)[key]} onChange={e => update(key as keyof DiaryEntry, e.target.value)} disabled={submitted && viewDate !== today()} placeholder={placeholder} className="w-full text-sm text-gray-700 resize-none focus:outline-none border border-border rounded-xl px-3 py-2 placeholder-gray-300 focus:ring-2 focus:ring-teal-300" />
                     </div>
                   ))}
                 </div>
@@ -280,7 +280,7 @@ export default function DiaryPage() {
                   ].map(({ key, label, Icon, placeholder, color, rows }) => (
                     <div key={key}>
                       <label className={`text-xs font-medium flex items-center gap-1.5 mb-1.5 ${color}`}><Icon className="h-3.5 w-3.5" />{label}</label>
-                      <textarea rows={rows} value={(entry as Record<string, unknown>)[key] as string} onChange={e => update(key as keyof DiaryEntry, e.target.value)} disabled={submitted && viewDate !== today()} placeholder={placeholder} className="w-full text-sm text-gray-700 resize-none focus:outline-none border border-border rounded-xl px-3 py-2 placeholder-gray-300 focus:ring-2 focus:ring-teal-300" />
+                      <textarea rows={rows} value={(entry as unknown as Record<string, string>)[key]} onChange={e => update(key as keyof DiaryEntry, e.target.value)} disabled={submitted && viewDate !== today()} placeholder={placeholder} className="w-full text-sm text-gray-700 resize-none focus:outline-none border border-border rounded-xl px-3 py-2 placeholder-gray-300 focus:ring-2 focus:ring-teal-300" />
                     </div>
                   ))}
                 </div>

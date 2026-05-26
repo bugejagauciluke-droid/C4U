@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
+import { checkRateLimit, getClientId, validatePayload } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -57,10 +58,18 @@ const FALLBACK_PLAN: GoalPlan = {
 };
 
 export async function POST(req: NextRequest) {
+  const clientId = getClientId(req);
+  const rl = checkRateLimit(clientId, "goals");
+  if (!rl.ok) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
+  }
+
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
   const body = await req.json();
+  const validationError = validatePayload(body, "goals");
+  if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
   const { type } = body as { type: "generate" | "review" };
 
   if (!isConfigured()) return NextResponse.json(FALLBACK_PLAN);

@@ -64,8 +64,8 @@ export default async function AccountLayout({ children }: { children: React.Reac
           <Link href="/account/settings" className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-muted-foreground hover:bg-muted transition-colors">
             Settings
           </Link>
-          <Link href="/support" className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-muted-foreground hover:bg-muted transition-colors">
-            ← Get support
+          <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-muted-foreground hover:bg-muted transition-colors">
+            ← Talk to C4U
           </Link>
         </div>
       </aside>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
+import { checkRateLimit, getClientId, validatePayload } from "@/lib/rate-limit";
 
 function buildSystem(meta: Record<string, string>, warningLevel: number) {
   const gender = meta.gender ?? "prefer_not";
@@ -109,9 +110,17 @@ WHAT C4U CAN OFFER (suggest naturally, never as a sales pitch):
 
 Keep responses human-length — 2–4 short paragraphs. End with one genuine question that shows you actually want to know more.`;
 }
-}
 
 export async function POST(req: NextRequest) {
+  const clientId = getClientId(req);
+  const rl = checkRateLimit(clientId, "companion");
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please slow down a little." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } },
+    );
+  }
+
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
@@ -119,16 +128,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "AI not configured" }, { status: 503 });
   }
 
+  // Parse body first (warningLevel needed for system prompt)
+  const body = await req.json();
+  const validationError = validatePayload(body, "companion");
+  if (validationError) return NextResponse.json({ error: validationError }, { status: 400 });
+
+  const { messages, warningLevel = 0 } = body as {
+    messages: { role: "user" | "assistant"; content: string }[];
+    warningLevel?: number;
+  };
+
   // Get user profile for personalisation
   const clerk = await clerkClient();
   const user = await clerk.users.getUser(userId);
   const meta = (user.unsafeMetadata ?? {}) as Record<string, string>;
   const SYSTEM = buildSystem(meta, warningLevel);
-
-  const { messages, warningLevel = 0 } = (await req.json()) as {
-    messages: { role: "user" | "assistant"; content: string }[];
-    warningLevel?: number;
-  };
 
   const stream = anthropic.messages.stream({
     model: "claude-sonnet-4-6",
