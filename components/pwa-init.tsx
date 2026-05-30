@@ -4,20 +4,26 @@ import { useEffect, useState } from "react";
 import { Bell, X } from "lucide-react";
 
 const DISMISSED_KEY = "c4u_push_dismissed";
+const VAPID_PUBLIC = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
+
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
+}
 
 export function PWAInit() {
   const [showPrompt, setShowPrompt] = useState(false);
-  const [reg, setReg]               = useState<ServiceWorkerRegistration | null>(null);
+  const [reg, setReg] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
-    // Register service worker
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").then((r) => {
-        setReg(r);
-      }).catch(() => {});
-    }
+    if (!("serviceWorker" in navigator)) return;
 
-    // Show push prompt after 30 seconds if not dismissed and not already granted
+    navigator.serviceWorker.register("/sw.js").then((r) => {
+      setReg(r);
+    }).catch(() => {});
+
     if (!("Notification" in window)) return;
     if (Notification.permission === "granted") return;
     if (localStorage.getItem(DISMISSED_KEY)) return;
@@ -28,14 +34,31 @@ export function PWAInit() {
 
   async function requestPermission() {
     if (!("Notification" in window)) return;
+
     const permission = await Notification.requestPermission();
-    if (permission === "granted" && reg) {
-      // Subscribe to push (requires VAPID key in production)
-      // For now just show a local test notification
-      reg.showNotification("C4U is here for you 💙", {
-        body: "You'll now get gentle check-ins and daily challenge reminders.",
-        icon: "/icon-192.png",
-      });
+    if (permission === "granted" && reg && VAPID_PUBLIC) {
+      try {
+        // Subscribe to push
+        const sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC),
+        });
+
+        // Save subscription to server
+        await fetch("/api/push/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(sub.toJSON()),
+        });
+
+        // Show welcome notification
+        reg.showNotification("C4U is here for you 💙", {
+          body: "You'll get gentle check-ins and daily challenge reminders.",
+          icon: "/icon-192.svg",
+        });
+      } catch (err) {
+        console.error("Push subscription failed:", err);
+      }
     }
     setShowPrompt(false);
   }

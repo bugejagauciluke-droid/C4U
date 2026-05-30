@@ -3,6 +3,7 @@ import { stripe, isStripeConfigured } from "@/lib/stripe";
 import { Users, CreditCard, TrendingUp, Heart, Building2, AlertTriangle, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PushSender } from "./push-sender";
 
 async function getStats() {
   const clerk = await clerkClient();
@@ -145,6 +146,13 @@ export default async function AdminPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Push notification sender */}
+      <Card>
+        <CardContent className="p-6">
+          <PushSender adminSecret={process.env.ADMIN_SECRET ?? ""} />
+        </CardContent>
+      </Card>
 
       {/* Stripe status */}
       <Card>
