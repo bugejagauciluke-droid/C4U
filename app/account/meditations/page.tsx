@@ -11,13 +11,13 @@ import { Badge } from "@/components/ui/badge";
 // – "Rest Without Guilt" (sleep): deeper indigo (most calming, circadian-aligned, melatonin-associated)
 const MEDITATIONS = [
   { title: "Arrive in Your Body",      duration: "8 min",  tag: "Grounding", gradient: "from-teal-500 to-emerald-600",   desc: "A gentle body scan to bring you back to the present moment.",        file: "/audio/meditation-1.mp3" },
-  { title: "Letting Go of the Day",    duration: "12 min", tag: "Release",   gradient: "from-indigo-500 to-violet-600",  desc: "Release tension and soften into rest at the end of a hard day.",     file: "/audio/meditation-2.mp3" },
-  { title: "You Are Not Alone",        duration: "10 min", tag: "Connection",gradient: "from-rose-400 to-pink-500",      desc: "A loving-kindness practice for when loneliness feels heavy.",         file: "/audio/meditation-3.mp3" },
-  { title: "Breathing Through It",     duration: "6 min",  tag: "Anxiety",   gradient: "from-sky-400 to-blue-600",       desc: "Calm an anxious mind with guided breathwork.",                        file: "/audio/meditation-4.mp3" },
-  { title: "The Calm After the Storm", duration: "14 min", tag: "Grief",     gradient: "from-slate-400 to-indigo-600",   desc: "A soft, compassionate practice for navigating grief and loss.",       file: "/audio/meditation-5.mp3" },
-  { title: "Finding Ground",           duration: "9 min",  tag: "Overwhelm", gradient: "from-teal-500 to-emerald-700",   desc: "When everything feels too much — come back to this.",                 file: "/audio/meditation-6.mp3" },
-  { title: "Morning Intention",        duration: "7 min",  tag: "Morning",   gradient: "from-amber-400 to-emerald-500",  desc: "Set a compassionate intention for the day ahead.",                    file: "/audio/meditation-7.mp3" },
-  { title: "Rest Without Guilt",       duration: "15 min", tag: "Sleep",     gradient: "from-indigo-600 to-violet-900",  desc: "A slow, soothing practice to ease you into sleep.",                   file: "/audio/meditation-8.mp3" },
+  { title: "Letting Go of the Day",    duration: "12 min", tag: "Release",   gradient: "from-indigo-500 to-violet-600",  desc: "Release tension and soften into rest at the end of a hard day.",     file: "/audio/meditation-2.wav" },
+  { title: "You Are Not Alone",        duration: "10 min", tag: "Connection",gradient: "from-rose-400 to-pink-500",      desc: "A loving-kindness practice for when loneliness feels heavy.",         file: "/audio/meditation-3.wav" },
+  { title: "Breathing Through It",     duration: "6 min",  tag: "Anxiety",   gradient: "from-sky-400 to-blue-600",       desc: "Calm an anxious mind with guided breathwork.",                        file: "/audio/meditation-4.wav" },
+  { title: "The Calm After the Storm", duration: "14 min", tag: "Grief",     gradient: "from-slate-400 to-indigo-600",   desc: "A soft, compassionate practice for navigating grief and loss.",       file: "/audio/meditation-5.wav" },
+  { title: "Finding Ground",           duration: "9 min",  tag: "Overwhelm", gradient: "from-teal-500 to-emerald-700",   desc: "When everything feels too much — come back to this.",                 file: "/audio/meditation-6.wav" },
+  { title: "Morning Intention",        duration: "7 min",  tag: "Morning",   gradient: "from-amber-400 to-emerald-500",  desc: "Set a compassionate intention for the day ahead.",                    file: "/audio/meditation-7.wav" },
+  { title: "Rest Without Guilt",       duration: "15 min", tag: "Sleep",     gradient: "from-indigo-600 to-violet-900",  desc: "A slow, soothing practice to ease you into sleep.",                   file: "/audio/meditation-8.wav" },
 ];
 
 function formatTime(s: number) {
