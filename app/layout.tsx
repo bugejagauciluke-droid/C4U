@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    metadataBase: new URL("https://c4ucare.netlify.app"),
+    metadataBase: new URL("https://care4you.netlify.app"),
     openGraph: {
       title,
       description,
