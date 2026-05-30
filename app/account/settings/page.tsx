@@ -5,6 +5,7 @@ import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowRight, CreditCard, Mail, Shield, AlertTriangle } from "lucide-react";
 import { BillingButton } from "./billing-button";
+import { DeleteAccountButton } from "./delete-button";
 
 const TIER_LABELS: Record<string, string> = {
   free: "Free", base: "Base — €10/mo", plus: "Plus — €20/mo", transform: "Transform — €30/mo",
@@ -69,12 +70,11 @@ export default async function SettingsPage() {
 
       {/* Danger zone */}
       <Section title="Delete Account" Icon={AlertTriangle}>
-        <p className="text-sm text-muted-foreground mb-3">
-          To delete your account and all associated data, email{" "}
-          <a href="mailto:landbandg@gmail.com" className="text-primary underline">landbandg@gmail.com</a>{" "}
-          from your registered email address. We will process your request within 30 days.
+        <p className="text-sm text-muted-foreground mb-4">
+          Permanently delete your account and all associated data. This action cannot be undone.
+          If you have an active subscription, cancel it first in billing to avoid further charges.
         </p>
-        <p className="text-xs text-muted-foreground">Make sure to cancel your subscription first if you have one.</p>
+        <DeleteAccountButton />
       </Section>
     </div>
   );
