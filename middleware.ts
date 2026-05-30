@@ -5,7 +5,7 @@ const isProtected = createRouteMatcher([
   "/account(.*)",
 ]);
 
-export const proxy = clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
   if (isProtected(req)) await auth.protect();
 });
 
