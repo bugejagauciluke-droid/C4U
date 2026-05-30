@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Providers } from "@/components/providers";
 import { CookieBanner } from "@/components/cookie-banner";
+import { PWAInit } from "@/components/pwa-init";
 import { readSiteConfig } from "@/lib/site-config";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -15,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    metadataBase: new URL("https://care4you.netlify.app"),
+    metadataBase: new URL("https://caring4you.netlify.app"),
     openGraph: {
       title,
       description,
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar appName={branding.appName} />
           <main className="flex-1">{children}</main>
           <CookieBanner />
+          <PWAInit />
         </body>
       </html>
     </Providers>

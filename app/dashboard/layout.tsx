@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, PenSquare, Settings, Heart } from "lucide-react";
+import { LayoutDashboard, PenSquare, Settings, Heart, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/dashboard", label: "Overview", Icon: LayoutDashboard },
+  { href: "/dashboard/admin", label: "Live Data", Icon: ShieldCheck },
   { href: "/dashboard/site", label: "Site Editor", Icon: PenSquare },
   { href: "/dashboard/settings", label: "Settings", Icon: Settings },
 ];
