@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { readSiteConfig } from "@/lib/site-config";
 import { HeroChat } from "@/components/hero-chat";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 
 const TESTIMONIALS = [
   {
@@ -245,12 +246,7 @@ export default function LandingPage() {
             C4U is here — right now, no sign-up needed. Just type.
           </p>
           <div className="mt-8">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-teal-500 to-violet-600 text-white font-bold text-base shadow-xl hover:opacity-90 transition-opacity"
-            >
-              <Heart className="h-5 w-5 fill-white" /> Talk to C4U now
-            </button>
+            <ScrollToTopButton />
           </div>
         </div>
       </section>
