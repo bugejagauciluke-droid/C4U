@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
 import { checkRateLimit, getClientId, validatePayload } from "@/lib/rate-limit";
+import { getSystemContext } from "@/lib/cultural-context";
 
 export const runtime = "nodejs";
 
@@ -157,7 +158,7 @@ export async function POST(req: NextRequest) {
     if (!isConfigured()) return NextResponse.json(FALLBACK);
 
     // Read user profile if signed in — adapt tone accordingly
-    let gender = "prefer_not", age = "unknown", need = "both";
+    let gender = "prefer_not", age = "unknown", need = "both", location = "";
     try {
       const { userId } = await auth();
       if (userId) {
@@ -167,10 +168,12 @@ export async function POST(req: NextRequest) {
         gender = meta.gender ?? gender;
         age = meta.ageRange ?? age;
         need = meta.needType ?? need;
+        location = meta.location ?? location;
       }
     } catch { /* not signed in — use neutral defaults */ }
 
-    const SYSTEM = buildSystem(gender, age, need);
+    const culturalContext = getSystemContext(location);
+    const SYSTEM = buildSystem(gender, age, need) + (culturalContext ? `\n\n${culturalContext}` : "");
     const msg = `My situation: ${situation || "General need for support"}\n\nWhat I'm experiencing: ${details}`;
 
     const res = await anthropic.messages.create({

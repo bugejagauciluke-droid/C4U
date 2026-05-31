@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { anthropic, isConfigured } from "@/lib/claude";
 import { checkRateLimit, getClientId } from "@/lib/rate-limit";
+import { getSystemContext } from "@/lib/cultural-context";
 
 export const runtime = "nodejs";
 
@@ -145,7 +146,7 @@ export async function POST(req: NextRequest) {
 
   if (!isConfigured()) return NextResponse.json(FALLBACK);
 
-  let gender = "prefer_not", age = "unknown";
+  let gender = "prefer_not", age = "unknown", location = "";
   try {
     const { userId } = await auth();
     if (userId) {
@@ -154,10 +155,14 @@ export async function POST(req: NextRequest) {
       const meta = (user.unsafeMetadata ?? {}) as Record<string, string>;
       gender = meta.gender ?? gender;
       age = meta.ageRange ?? age;
+      location = meta.location ?? location;
     }
   } catch { /* anon */ }
 
+  const culturalContext = getSystemContext(location);
   const { condition, subtype, currentMood, context, todayChallenge } = body;
+
+  const fullSystem = SYSTEM + (culturalContext ? `\n\n${culturalContext}` : "");
 
   const prompt = `The person is seeking support for: ${condition}${subtype ? ` (${subtype})` : ""}
 Current mood score: ${currentMood !== undefined ? `${currentMood}/10` : "not specified"}
@@ -172,7 +177,7 @@ Generate personalised, evidence-based exercises and support specifically tailore
     const res = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 2500,
-      system: SYSTEM,
+      system: fullSystem,
       messages: [{ role: "user", content: prompt }],
     });
 

@@ -49,6 +49,17 @@ const PREFERENCE_STEPS = [
       { value: "not_sure", label: "I'm not sure yet",   emoji: "🌙" },
     ],
   },
+  {
+    question: "Where are you based?",
+    subtitle: "Helps C4U understand your cultural context. Completely optional.",
+    field: "location",
+    options: [
+      { value: "malta",         label: "Malta",           emoji: "🇲🇹" },
+      { value: "uk",            label: "UK / Ireland",    emoji: "🇬🇧" },
+      { value: "europe",        label: "Europe",          emoji: "🇪🇺" },
+      { value: "international", label: "Somewhere else",  emoji: "🌍" },
+    ],
+  },
 ];
 
 // Total steps = 1 confirmation screen + preference steps
