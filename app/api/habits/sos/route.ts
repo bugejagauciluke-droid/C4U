@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { anthropic, isConfigured } from "@/lib/claude";
 import { checkRateLimit, getClientId } from "@/lib/rate-limit";
+import { formatResourcesForAI } from "@/lib/crisis-resources";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,7 @@ export interface SOSRequest {
   urgeLevel: number;      // 1-10
   situation?: string;     // what's happening right now
   timeOfDay?: string;
+  location?: string;      // country code for local resources
 }
 
 export interface SOSStep {
@@ -133,9 +135,17 @@ export async function POST(req: NextRequest) {
   const body = await req.json() as SOSRequest;
   if (!isConfigured()) return NextResponse.json(FALLBACK);
 
-  const { habit, urgeLevel, situation, timeOfDay } = body;
+  const { habit, urgeLevel, situation, timeOfDay, location } = body;
+
+  // Get real local crisis resources to include in the response
+  const localResources = formatResourcesForAI(location || "MT");
 
   const prompt = `EMERGENCY: Someone is fighting a strong urge RIGHT NOW.
+
+${localResources}
+
+Use the real numbers above when referring someone to professional help. Always cite the actual organisation name and number.
+
 Habit they're fighting: ${habit}
 Urge intensity: ${urgeLevel}/10
 ${situation ? `What's happening: "${situation}"` : ""}

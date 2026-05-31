@@ -255,11 +255,13 @@ export default function LandingPage() {
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
         <p className="font-bold gradient-text text-base mb-1">{branding.appName}</p>
         <p>{branding.footerText}</p>
-        <p className="mt-4 text-xs">
-          <strong>Crisis line:</strong> Text HOME to 741741 &nbsp;·&nbsp;{" "}
-          <a href="https://www.befrienders.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">befrienders.org</a>
-        </p>
+        <div className="mt-4 text-xs space-y-1">
+          <p><strong>Malta:</strong> Agenzija SEDQA <a href="tel:179" className="text-primary font-bold hover:underline">179</a> (24/7, free) &nbsp;·&nbsp; Emergency: <a href="tel:112" className="text-primary font-bold hover:underline">112</a></p>
+          <p><strong>UK:</strong> FRANK <a href="tel:03001236600" className="text-primary font-bold hover:underline">0300 123 6600</a> &nbsp;·&nbsp; Samaritans <a href="tel:116123" className="text-primary font-bold hover:underline">116 123</a></p>
+          <p>Crisis Text Line: Text HOME to 741741 &nbsp;·&nbsp; <a href="https://www.befrienders.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">befrienders.org</a></p>
+        </div>
         <div className="mt-5 flex items-center justify-center gap-5 text-xs">
+          <Link href="/resources" className="text-primary font-semibold hover:underline">All Crisis Resources</Link>
           <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
           <Link href="/disclaimer" className="hover:text-primary transition-colors">Mental Health Disclaimer</Link>

@@ -1,8 +1,91 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Shield, Loader2, Clock, ChevronRight, RefreshCw, Phone } from "lucide-react";
+import { Shield, Loader2, Clock, ChevronRight, RefreshCw, Phone, AlertTriangle, ExternalLink } from "lucide-react";
 import type { SOSResponse, SOSStep } from "@/app/api/habits/sos/route";
+
+// Hard drugs that need extra safety layer
+const HIGH_RISK_HABITS = ["drugs", "alcohol", "cannabis"];
+const OPIOID_HABITS = ["drugs"]; // heroin, fentanyl etc — needs overdose warning
+
+function SafetyCard({ habit }: { habit: string }) {
+  if (!OPIOID_HABITS.includes(habit)) return null;
+  return (
+    <div className="bg-red-950 border-2 border-red-500 rounded-2xl p-4">
+      <div className="flex items-start gap-3">
+        <AlertTriangle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+        <div>
+          <p className="text-red-300 font-bold text-sm mb-2">⚠️ Critical safety — read this first</p>
+          <div className="space-y-1.5 text-xs text-red-200">
+            <p>• If you use tonight: <strong className="text-red-100">never use alone</strong> — someone must be present</p>
+            <p>• <strong className="text-red-100">Alcohol + opioids = respiratory depression risk.</strong> If you've been drinking, your tolerance is already lowered</p>
+            <p>• If someone loses consciousness: <strong className="text-red-100">Call 112 immediately</strong></p>
+            <p>• Naloxone reverses opioid overdose — ask at pharmacies or harm reduction services</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Level2Escalation({ habit }: { habit: string }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 8 * 60 * 1000); // show after 8 min
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!show) return null;
+
+  const isHardDrug = OPIOID_HABITS.includes(habit);
+
+  return (
+    <div className="bg-red-950/60 border border-red-700 rounded-2xl p-5 space-y-4">
+      <p className="text-red-300 font-bold text-sm text-center">Still losing the fight?</p>
+      <p className="text-red-200 text-xs text-center">The steps above work for most people. If they're not working right now — escalate immediately.</p>
+
+      <div className="space-y-3">
+        {/* Level 2 Step 1 */}
+        <div className="bg-slate-900 rounded-xl p-3">
+          <p className="text-white font-bold text-sm">1. Call someone — anyone — right now</p>
+          <p className="text-slate-300 text-xs mt-1">Not to explain. Just to speak out loud. A call activates social circuits that directly compete with craving. Even "can you just talk to me for a minute" is enough.</p>
+        </div>
+
+        {/* Level 2 Step 2 */}
+        <div className="bg-slate-900 rounded-xl p-3">
+          <p className="text-white font-bold text-sm">2. Get physically outside</p>
+          <p className="text-slate-300 text-xs mt-1">Stand up, go outside, start walking — any direction. 10 minutes of walking while the urge is this strong is one of the most effective interventions known. Don't stop.</p>
+        </div>
+
+        {/* Level 2 Step 3 - hard drugs only */}
+        {isHardDrug && (
+          <div className="bg-red-900/40 rounded-xl p-3 border border-red-700">
+            <p className="text-red-200 font-bold text-sm">3. If you're at risk right now — call a crisis line</p>
+            <p className="text-red-300 text-xs mt-1 mb-2">You do not have to be at rock bottom to call. This is exactly what they're there for.</p>
+            <div className="space-y-1">
+              <p className="text-red-200 text-xs font-bold">📞 116 123 — Samaritans (24/7, free)</p>
+              <p className="text-red-200 text-xs font-bold">📞 116 006 — National Substance Misuse</p>
+              <p className="text-red-200 text-xs font-bold">💬 Text HOME to 741741</p>
+            </div>
+          </div>
+        )}
+
+        {/* Harm reduction last resort */}
+        {isHardDrug && (
+          <div className="bg-amber-900/30 rounded-xl p-3 border border-amber-700">
+            <p className="text-amber-300 font-bold text-xs mb-1">If you use tonight despite everything:</p>
+            <div className="space-y-1 text-xs text-amber-200">
+              <p>→ Not alone. Someone must be with you.</p>
+              <p>→ Start with less — tolerance changes, especially with alcohol already in system</p>
+              <p>→ One day does not erase your progress. Tomorrow you try again.</p>
+              <p>→ This app is here in the morning, no judgment.</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 const HABITS = [
   { value: "alcohol",        label: "Alcohol",         emoji: "🍷" },
@@ -209,6 +292,9 @@ export default function SOSPage() {
     <div className="min-h-full bg-slate-950">
       <div className="max-w-lg mx-auto px-4 py-8 w-full space-y-5">
 
+        {/* Safety card for hard drugs - ALWAYS first */}
+        <SafetyCard habit={habit} />
+
         {/* First words */}
         <div className="bg-gradient-to-br from-rose-500 to-orange-500 rounded-3xl p-5 text-white shadow-xl">
           <div className="flex items-center gap-2 mb-2">
@@ -256,6 +342,9 @@ export default function SOSPage() {
           <p className="text-xs font-bold text-amber-400 uppercase tracking-wide mb-2">If you're still struggling hard</p>
           <p className="text-amber-200 text-sm leading-relaxed">{result.ifStillStruggling}</p>
         </div>
+
+        {/* Level 2 escalation — appears after 8 minutes */}
+        <Level2Escalation habit={habit} />
 
         {/* Crisis line */}
         <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 flex items-center gap-3">

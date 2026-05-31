@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, HandHeart, LayoutDashboard, Sparkles, Menu, X, User, Building2 } from "lucide-react";
+import { Heart, HandHeart, LayoutDashboard, Sparkles, Menu, X, User, Building2, Phone } from "lucide-react";
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ const NAV = [
   { href: "/",           label: "Talk to C4U", Icon: HandHeart,       highlight: true  },
   { href: "/premium",    label: "Premium",     Icon: Sparkles,        highlight: false },
   { href: "/enterprise", label: "For Teams",   Icon: Building2,       highlight: false },
+  { href: "/resources",  label: "Get Help",    Icon: Phone,           highlight: false },
   { href: "/dashboard",  label: "Dashboard",   Icon: LayoutDashboard, highlight: false },
 ];
 
