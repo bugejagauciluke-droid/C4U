@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getUserTier } from "@/lib/subscription";
-import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight, Zap, BookOpen, Target, Apple, Brain } from "lucide-react";
+import { Headphones, Music, MessageCircle, Star, Lock, ArrowRight, Zap, BookOpen, Target, Apple, Brain, Heart, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV = [
@@ -13,6 +13,8 @@ const NAV = [
   { href: "/account/goals",       label: "Life Goals",        Icon: Target,          feature: "transform" },
   { href: "/account/nutrition",   label: "Nutrition & Mood",  Icon: Apple,           feature: "transform" },
   { href: "/account/conditions",  label: "Condition Support", Icon: Brain,           feature: "plus"      },
+  { href: "/account/grief",       label: "Grief Support",     Icon: Heart,           feature: "plus"      },
+  { href: "/account/habits",      label: "Break a Habit",     Icon: RefreshCw,       feature: "plus"      },
 ];
 
 const TIER_ORDER = ["free", "base", "plus", "transform"];
