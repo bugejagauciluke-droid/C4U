@@ -4,7 +4,7 @@ export const TIER_FEATURES: Record<Tier, string[]> = {
   free:      [],
   base:      ["meditations", "music"],
   plus:      ["meditations", "music", "companion", "challenge"],
-  transform: ["meditations", "music", "companion", "plans", "challenge", "diary", "goals"],
+  transform: ["meditations", "music", "companion", "plans", "challenge", "diary", "goals", "nutrition"],
 };
 
 export function hasFeature(tier: Tier, feature: string): boolean {
