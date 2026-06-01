@@ -11,19 +11,65 @@ const OPIOID_HABITS = ["drugs"]; // heroin, fentanyl etc — needs overdose warn
 function SafetyCard({ habit }: { habit: string }) {
   if (!OPIOID_HABITS.includes(habit)) return null;
   return (
-    <div className="bg-red-950 border-2 border-red-500 rounded-2xl p-4">
+    <div className="bg-red-950 border-2 border-red-500 rounded-2xl p-4 space-y-3">
       <div className="flex items-start gap-3">
         <AlertTriangle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
         <div>
-          <p className="text-red-300 font-bold text-sm mb-2">⚠️ Critical safety — read this first</p>
-          <div className="space-y-1.5 text-xs text-red-200">
-            <p>• If you use tonight: <strong className="text-red-100">never use alone</strong> — someone must be present</p>
-            <p>• <strong className="text-red-100">Alcohol + opioids = respiratory depression risk.</strong> If you've been drinking, your tolerance is already lowered</p>
-            <p>• If someone loses consciousness: <strong className="text-red-100">Call 112 immediately</strong></p>
-            <p>• Naloxone reverses opioid overdose — ask at pharmacies or harm reduction services</p>
-          </div>
+          <p className="text-red-300 font-bold text-sm mb-2">⚠️ Medical emergency? Call now.</p>
+          <p className="text-red-200 text-xs leading-relaxed">
+            If you or anyone near you is unconscious, not breathing, or unresponsive —
+            this is a medical emergency. <strong className="text-white">Call 112 immediately</strong> before anything else.
+          </p>
         </div>
       </div>
+      {/* Emergency call button */}
+      <a href="tel:112" className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-base transition-colors">
+        <Phone className="h-5 w-5" /> Call 112 — Emergency
+      </a>
+      <p className="text-red-400 text-[10px] text-center">
+        C4U does not provide medical advice. In any life-threatening situation, call emergency services first.
+      </p>
+    </div>
+  );
+}
+
+function AloneProtocol({ visible }: { visible: boolean }) {
+  if (!visible) return null;
+  return (
+    <div className="bg-indigo-950 border border-indigo-600 rounded-2xl p-4 space-y-3">
+      <p className="text-indigo-200 font-bold text-sm flex items-center gap-2">
+        <Phone className="h-4 w-4 text-indigo-400" /> You said you're alone — this matters
+      </p>
+      <p className="text-indigo-300 text-xs leading-relaxed">
+        Being alone makes this harder and more dangerous. The most important thing you can do right now
+        is get a real human voice on the line. These lines are free, 24/7, and trained for exactly this.
+      </p>
+      <div className="space-y-2">
+        <a href="tel:179" className="flex items-center justify-between w-full bg-indigo-900 hover:bg-indigo-800 rounded-xl px-4 py-3 transition-colors">
+          <div>
+            <p className="text-white font-bold text-sm">SEDQA Malta — 179</p>
+            <p className="text-indigo-300 text-xs">Drug & alcohol support · 24/7 · Free · Will stay on the line</p>
+          </div>
+          <Phone className="h-4 w-4 text-indigo-400" />
+        </a>
+        <a href="tel:116123" className="flex items-center justify-between w-full bg-indigo-900 hover:bg-indigo-800 rounded-xl px-4 py-3 transition-colors">
+          <div>
+            <p className="text-white font-bold text-sm">Samaritans — 116 123</p>
+            <p className="text-indigo-300 text-xs">Emotional crisis · 24/7 · Free · No judgment</p>
+          </div>
+          <Phone className="h-4 w-4 text-indigo-400" />
+        </a>
+        <a href="tel:25903500" className="flex items-center justify-between w-full bg-indigo-900 hover:bg-indigo-800 rounded-xl px-4 py-3 transition-colors">
+          <div>
+            <p className="text-white font-bold text-sm">Caritas Malta — 2590 3500</p>
+            <p className="text-indigo-300 text-xs">Addiction support · Free · Confidential</p>
+          </div>
+          <Phone className="h-4 w-4 text-indigo-400" />
+        </a>
+      </div>
+      <p className="text-indigo-400 text-[10px] text-center">
+        You do not have to be "in crisis enough" to call. That is what they are there for.
+      </p>
     </div>
   );
 }
@@ -57,29 +103,23 @@ function Level2Escalation({ habit }: { habit: string }) {
           <p className="text-slate-300 text-xs mt-1">Stand up, go outside, start walking — any direction. 10 minutes of walking while the urge is this strong is one of the most effective interventions known. Don't stop.</p>
         </div>
 
-        {/* Level 2 Step 3 - hard drugs only */}
+        {/* Level 2 Step 3 - hard drugs: professional help only */}
         {isHardDrug && (
-          <div className="bg-red-900/40 rounded-xl p-3 border border-red-700">
-            <p className="text-red-200 font-bold text-sm">3. If you're at risk right now — call a crisis line</p>
-            <p className="text-red-300 text-xs mt-1 mb-2">You do not have to be at rock bottom to call. This is exactly what they're there for.</p>
-            <div className="space-y-1">
-              <p className="text-red-200 text-xs font-bold">📞 116 123 — Samaritans (24/7, free)</p>
-              <p className="text-red-200 text-xs font-bold">📞 116 006 — National Substance Misuse</p>
-              <p className="text-red-200 text-xs font-bold">💬 Text HOME to 741741</p>
-            </div>
-          </div>
-        )}
-
-        {/* Harm reduction last resort */}
-        {isHardDrug && (
-          <div className="bg-amber-900/30 rounded-xl p-3 border border-amber-700">
-            <p className="text-amber-300 font-bold text-xs mb-1">If you use tonight despite everything:</p>
-            <div className="space-y-1 text-xs text-amber-200">
-              <p>→ Not alone. Someone must be with you.</p>
-              <p>→ Start with less — tolerance changes, especially with alcohol already in system</p>
-              <p>→ One day does not erase your progress. Tomorrow you try again.</p>
-              <p>→ This app is here in the morning, no judgment.</p>
-            </div>
+          <div className="bg-red-900/40 rounded-xl p-4 border border-red-700 space-y-2">
+            <p className="text-red-200 font-bold text-sm">3. A trained person needs to hear you right now</p>
+            <p className="text-red-300 text-xs">These services exist specifically for this moment. They will not judge you. They will not report you. Call one:</p>
+            <a href="tel:179" className="flex items-center justify-between bg-red-900/60 rounded-xl px-3 py-2.5 hover:bg-red-900 transition-colors">
+              <div><p className="text-white font-bold text-sm">SEDQA Malta — 179</p><p className="text-red-300 text-xs">Drug & alcohol · 24/7 · Free</p></div>
+              <Phone className="h-4 w-4 text-red-300" />
+            </a>
+            <a href="tel:116123" className="flex items-center justify-between bg-red-900/60 rounded-xl px-3 py-2.5 hover:bg-red-900 transition-colors">
+              <div><p className="text-white font-bold text-sm">Samaritans — 116 123</p><p className="text-red-300 text-xs">Crisis support · 24/7 · Free</p></div>
+              <Phone className="h-4 w-4 text-red-300" />
+            </a>
+            <a href="tel:112" className="flex items-center justify-between bg-red-700 rounded-xl px-3 py-2.5 hover:bg-red-600 transition-colors">
+              <div><p className="text-white font-bold text-sm">Emergency — 112</p><p className="text-red-200 text-xs">If there is any immediate danger to life</p></div>
+              <Phone className="h-4 w-4 text-white" />
+            </a>
           </div>
         )}
       </div>
@@ -180,6 +220,7 @@ export default function SOSPage() {
   const [habit, setHabit]         = useState("");
   const [urgency, setUrgency]     = useState(7);
   const [situation, setSituation] = useState("");
+  const [isAlone, setIsAlone]     = useState(false);
   const [loading, setLoading]     = useState(false);
   const [result, setResult]       = useState<SOSResponse | null>(null);
   const [timerDone, setTimerDone] = useState(false);
@@ -204,6 +245,8 @@ export default function SOSPage() {
           urgeLevel: urgency,
           situation: situation.trim() || undefined,
           timeOfDay: getTimeOfDay(),
+          isAlone,
+          location: "MT",
         }),
       });
       setResult(await res.json());
@@ -261,13 +304,33 @@ export default function SOSPage() {
           </div>
         </div>
 
+        {/* Are you alone? — critical safety question */}
         <div className="bg-slate-800 rounded-2xl p-5">
-          <p className="text-slate-300 text-sm font-semibold mb-2">What's going on right now? <span className="font-normal text-slate-500">(optional)</span></p>
+          <p className="text-slate-300 text-sm font-semibold mb-3">Are you completely alone right now?</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={() => setIsAlone(true)}
+              className={`py-3 rounded-xl text-sm font-bold border-2 transition-all ${isAlone ? "border-indigo-500 bg-indigo-900/40 text-indigo-200" : "border-slate-600 text-slate-300 hover:border-slate-400"}`}>
+              Yes, alone
+            </button>
+            <button onClick={() => setIsAlone(false)}
+              className={`py-3 rounded-xl text-sm font-bold border-2 transition-all ${!isAlone ? "border-slate-500 bg-slate-700 text-slate-200" : "border-slate-600 text-slate-300 hover:border-slate-400"}`}>
+              Someone nearby
+            </button>
+          </div>
+          {isAlone && HIGH_RISK_HABITS.includes(habit) && (
+            <p className="text-indigo-300 text-xs mt-2 bg-indigo-950/50 rounded-lg p-2">
+              Being alone + this situation = higher risk. We'll show you phone lines with real people available immediately.
+            </p>
+          )}
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-5">
+          <p className="text-slate-300 text-sm font-semibold mb-2">What's happening right now? <span className="font-normal text-slate-500">(optional)</span></p>
           <textarea
             value={situation}
             onChange={e => setSituation(e.target.value)}
             rows={2}
-            placeholder="e.g. just had a fight, home alone, stressed about work..."
+            placeholder="e.g. just had a fight, at a club, stressed, celebrating..."
             className="w-full bg-slate-900 text-white text-sm rounded-xl px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-rose-500 placeholder-slate-600 border border-slate-700"
           />
         </div>
@@ -294,6 +357,9 @@ export default function SOSPage() {
 
         {/* Safety card for hard drugs - ALWAYS first */}
         <SafetyCard habit={habit} />
+
+        {/* Alone protocol - shows immediately if alone + high risk */}
+        <AloneProtocol visible={isAlone && HIGH_RISK_HABITS.includes(habit)} />
 
         {/* First words */}
         <div className="bg-gradient-to-br from-rose-500 to-orange-500 rounded-3xl p-5 text-white shadow-xl">

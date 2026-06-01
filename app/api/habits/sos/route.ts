@@ -8,9 +8,10 @@ export const runtime = "nodejs";
 export interface SOSRequest {
   habit: string;          // what they're fighting
   urgeLevel: number;      // 1-10
-  situation?: string;     // what's happening right now
+  situation?: string;     // what's happening right now (may be misspelled/garbled)
   timeOfDay?: string;
   location?: string;      // country code for local resources
+  isAlone?: boolean;      // critical safety flag
 }
 
 export interface SOSStep {
@@ -63,11 +64,37 @@ TONE:
 - Acknowledge the courage it took to reach out
 - Make them feel held right now
 
+MISSPELLED / GARBLED MESSAGES — CRITICAL PROTOCOL:
+If the situation text contains many spelling errors, incoherent words, or garbled language:
+- DO NOT correct them or comment on spelling
+- This may mean: (a) they are already intoxicated, (b) they are in acute distress/panic, (c) they are typing fast while scared
+- READ THE EMOTIONAL MEANING behind the words, not the literal text
+- Respond in EVEN SIMPLER language than usual — short words, short sentences
+- Your FIRST sentence in firstWords must ask: "Are you safe right now?"
+- If they may already be intoxicated: first step must be safety-focused (sit down, don't drive, stay put)
+- If message is completely incoherent: first step = "Tell me one word — where are you right now?"
+
+ALONE PROTOCOL — if isAlone = true:
+- Acknowledge this explicitly and warmly: "You said you're alone. That makes this harder. I'm here."
+- Step 1 MUST be a phone call — not an exercise. Being alone changes everything.
+- Name the specific crisis line with the number: SEDQA 179 (Malta, 24/7, will stay on the line)
+- Frame the call not as "getting help" but as "not being alone for the next 20 minutes"
+- The 20-minute urge timer is still useful — but only AFTER they have someone on the phone
+- "You don't need to be at rock bottom. You can literally call and say: I'm fighting something and I need a voice."
+
+LEGAL POSITION — CRITICAL:
+- C4U NEVER advises on how to use substances more safely
+- C4U NEVER says "if you use tonight..." or gives harm reduction drug-use advice
+- C4U refers ALL medical and substance emergencies to professional services
+- If life may be at risk: first sentence references 112 (emergency)
+- C4U's role is prevention and referral — not harm reduction service
+
 WHAT NOT TO DO:
 - Don't give long explanations — they can't process them right now
 - Don't shame even subtly
 - Don't say "think of how far you've come" — too abstract when urge is acute
 - Don't give more than 5 steps — overwhelming during a crisis
+- NEVER suggest a safer way to use drugs/alcohol — not C4U's role, not legal
 
 Return ONLY valid JSON:
 {
@@ -135,23 +162,33 @@ export async function POST(req: NextRequest) {
   const body = await req.json() as SOSRequest;
   if (!isConfigured()) return NextResponse.json(FALLBACK);
 
-  const { habit, urgeLevel, situation, timeOfDay, location } = body;
+  const { habit, urgeLevel, situation, timeOfDay, location, isAlone } = body;
 
   // Get real local crisis resources to include in the response
   const localResources = formatResourcesForAI(location || "MT");
+
+  // Detect garbled/misspelled input — indicates possible impairment or acute distress
+  const isGarbled = situation ? (
+    situation.length > 10 &&
+    (situation.split(" ").filter(w => w.length > 2 && !/^[a-zA-Z]+$/.test(w)).length / Math.max(situation.split(" ").length, 1)) > 0.4
+  ) : false;
 
   const prompt = `EMERGENCY: Someone is fighting a strong urge RIGHT NOW.
 
 ${localResources}
 
-Use the real numbers above when referring someone to professional help. Always cite the actual organisation name and number.
+ALWAYS use real organisation names and numbers from the list above when referring to help.
 
-Habit they're fighting: ${habit}
+Habit: ${habit}
 Urge intensity: ${urgeLevel}/10
-${situation ? `What's happening: "${situation}"` : ""}
-${timeOfDay ? `Time of day: ${timeOfDay}` : ""}
+${situation ? `What they wrote: "${situation}"` : "No situation text provided."}
+${isGarbled ? "⚠️ MESSAGE APPEARS GARBLED/MISSPELLED — possible intoxication or acute panic. Simplify response. Ask 'Are you safe right now?' as first sentence." : ""}
+${isAlone ? "⚠️ PERSON IS COMPLETELY ALONE — Step 1 MUST be a phone call to a real person. Name the number. Frame it as companionship not crisis." : ""}
+${timeOfDay ? `Time: ${timeOfDay}` : ""}
 
-Give them immediate, practical, real-time support. Fast. Warm. Direct. They need steps they can start in the next 30 seconds.`;
+LEGAL NOTE: Do not provide harm reduction drug-use advice. Refer to professional services only.
+
+Give them immediate, practical, real-time support. Fast. Warm. Direct.`;
 
   try {
     const res = await anthropic.messages.create({
