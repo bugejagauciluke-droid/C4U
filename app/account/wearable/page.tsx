@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Watch, Heart, Moon, Zap, Activity, TrendingUp, TrendingDown,
   Minus, Loader2, Sparkles, Plus, CheckCircle2, AlertTriangle,
@@ -252,15 +253,45 @@ function ConnectGuide() {
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function WearablePage() {
-  const [data, setData]             = useState<DailyHealthData[]>([]);
-  const [analysis, setAnalysis]     = useState<WearableAnalysis | null>(null);
-  const [loading, setLoading]       = useState(false);
-  const [showLog, setShowLog]       = useState(false);
-  const [goal, setGoal]             = useState("");
+  const [data, setData]                 = useState<DailyHealthData[]>([]);
+  const [analysis, setAnalysis]         = useState<WearableAnalysis | null>(null);
+  const [loading, setLoading]           = useState(false);
+  const [syncing, setSyncing]           = useState(false);
+  const [showLog, setShowLog]           = useState(false);
+  const [goal, setGoal]                 = useState("");
+  const [connected, setConnected]       = useState("");
+  const [lastSync, setLastSync]         = useState("");
 
   useEffect(() => {
-    const d = loadWearableData();
-    setData(d);
+    // Load from localStorage first (instant)
+    const local = loadWearableData();
+    if (local.length > 0) setData(local);
+
+    // Then fetch from server (Terra-synced data stored in Clerk)
+    (async () => {
+      setSyncing(true);
+      try {
+        const res = await fetch("/api/wearable/data");
+        if (res.ok) {
+          const { data: serverData, connected: c, lastSync: ls } = await res.json();
+          if (serverData?.length > 0) {
+            // Merge server data into local
+            const merged = [...local];
+            for (const entry of serverData) {
+              const idx = merged.findIndex(e => e.date === entry.date);
+              if (idx >= 0) merged[idx] = { ...merged[idx], ...entry };
+              else merged.push(entry);
+            }
+            const sorted = merged.sort((a,b) => b.date.localeCompare(a.date)).slice(0, 90);
+            setData(sorted);
+          }
+          if (c) setConnected(c);
+          if (ls) setLastSync(ls);
+        }
+      } catch { /* use local data */ }
+      setSyncing(false);
+    })();
+
     try {
       const g = localStorage.getItem("c4u_life_goal");
       if (g) setGoal((JSON.parse(g) as { goal?: string }).goal ?? "");
@@ -305,15 +336,54 @@ export default function WearablePage() {
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center">
-            <Watch className="h-5 w-5 text-white" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center">
+              <Watch className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Body & Mind Tracker</h1>
+              <p className="text-sm text-gray-500 mt-0.5">
+                {syncing ? "Syncing…" : connected ? `Connected: ${connected.replace("_"," ")}` : "Connect your health data"}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Body & Mind Tracker</h1>
-            <p className="text-sm text-gray-500 mt-0.5">Connect your health data to your mental wellbeing</p>
-          </div>
+          <Link href="/account/wearable/connect">
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all
+              ${connected ? "bg-teal-50 text-teal-700 border border-teal-200" : "bg-gradient-to-r from-violet-500 to-indigo-700 text-white shadow-md hover:shadow-lg"}`}>
+              {connected
+                ? <><CheckCircle2 className="h-4 w-4" />Connected</>
+                : <><Link2 className="h-4 w-4" />Connect watch</>
+              }
+            </div>
+          </Link>
         </div>
+
+        {/* Connect CTA if not connected */}
+        {!connected && data.length === 0 && (
+          <Link href="/account/wearable/connect">
+            <div className="bg-gradient-to-r from-violet-500 to-indigo-700 rounded-2xl p-5 text-white cursor-pointer hover:from-violet-600 hover:to-indigo-800 transition-all">
+              <div className="flex items-center gap-4">
+                <div className="h-14 w-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                  <Watch className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-lg">Link your Apple Watch or Samsung Watch</p>
+                  <p className="text-white/70 text-sm mt-1">Get personalised sleep, stress and heart health insights based on your real data</p>
+                  <p className="text-white/80 text-xs font-semibold mt-2">Tap to connect →</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
+
+        {/* Last sync info */}
+        {lastSync && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground px-1">
+            <RefreshCw className="h-3 w-3" />
+            Last synced: {new Date(lastSync).toLocaleDateString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+          </div>
+        )}
 
         {/* Science note */}
         <div className="bg-indigo-50 border border-indigo-100 rounded-2xl px-4 py-3 flex items-start gap-3">
