@@ -4,17 +4,25 @@ import { getStore } from "@netlify/blobs";
 
 export const runtime = "nodejs";
 
-webpush.setVapidDetails(
-  "mailto:landbandg@gmail.com",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+function initVapid() {
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY;
+  if (pub && priv) {
+    webpush.setVapidDetails("mailto:landbandg@gmail.com", pub, priv);
+    return true;
+  }
+  return false;
+}
 
 export async function POST(req: NextRequest) {
   // Admin-only: require secret header
   const secret = req.headers.get("x-admin-secret");
   if (!secret || secret !== process.env.ADMIN_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!initVapid()) {
+    return NextResponse.json({ error: "Push not configured — add VAPID keys to Netlify env vars." }, { status: 503 });
   }
 
   const { title, body, url = "/" } = await req.json();
