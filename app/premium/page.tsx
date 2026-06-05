@@ -4,6 +4,7 @@ import {
   Headphones, Music, Heart, MessageCircle, Mic, Flame,
   BookOpen, Target, BarChart3, FileText, Brain, Clock,
   Users, TrendingUp, Eye, AlertCircle, ChevronRight,
+  Apple, Watch, RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -130,6 +131,37 @@ const TIER_FEATURES_DETAIL = [
         ],
       },
       {
+        heading: "Mental Health Conditions",
+        Icon: Brain,
+        features: [
+          { name: "8 conditions supported", detail: "Anxiety, Social Anxiety, Panic Disorder, ADHD, Depression, OCD, Trauma/PTSD, Burnout — evidence-based exercises for each" },
+          { name: "CBT, DBT, ACT & more", detail: "Research-grounded techniques: Beck's CBT, Linehan's DBT, ACT, exposure therapy, breathing protocols" },
+          { name: "Science notes on every exercise", detail: "Each exercise explains the mechanism in plain language — you understand why it works" },
+          { name: "Weekly behavioural experiments", detail: "Gradual, manageable challenges tied specifically to your situation" },
+        ],
+      },
+      {
+        heading: "Grief Support",
+        Icon: Heart,
+        features: [
+          { name: "10 types of loss", detail: "Death, relationship ending, pregnancy loss, pet loss, health change, job loss, friendship — all honoured" },
+          { name: "Developmental grief model", detail: "Based on Neimeyer & Cacciatore (2016) — grief as a process, not stages. No rushing." },
+          { name: "Logotherapy & meaning-centered therapy", detail: "Viktor Frankl's approach: find the meaning even in loss. Grief exercises that actually help." },
+          { name: "Grief myths challenged", detail: "C4U gently challenges what society says you should feel — and gives you permission to feel what you actually feel" },
+        ],
+      },
+      {
+        heading: "Habit Breaking & Emergency SOS",
+        Icon: RefreshCw,
+        features: [
+          { name: "9 habit types supported", detail: "Alcohol, cannabis, pornography, gambling, smoking, social media, food, drugs, and other" },
+          { name: "Brain science, not willpower", detail: "Dopamine desensitisation, prefrontal cortex, stimulus-response — explained in plain language" },
+          { name: "Emergency SOS button", detail: "Fighting an urge right now? One tap → immediate intervention with urge timer, steps, and crisis lines" },
+          { name: "Alone protocol", detail: "If you're completely alone and fighting — C4U shows tap-to-call crisis lines immediately" },
+          { name: "Real crisis resources", detail: "Malta: SEDQA 179. UK: FRANK 0300 123 6600. Samaritans 116 123. All tap-to-call." },
+        ],
+      },
+      {
         heading: "Safety",
         Icon: AlertCircle,
         features: [
@@ -187,6 +219,26 @@ const TIER_FEATURES_DETAIL = [
         ],
       },
       {
+        heading: "Nutrition & Mood",
+        Icon: Apple,
+        features: [
+          { name: "Food-brain science, not diet advice", detail: "Based on Dye & Blundell (2002) research: tryptophan→serotonin, tyrosine→dopamine, omega-3 for brain structure" },
+          { name: "Personalised food recommendations", detail: "Based on your current emotional state, time of day, life goal, and diary mood score" },
+          { name: "Dietary restrictions respected", detail: "Lactose-free, vegan, gluten-free, nut allergy, diabetic, halal, kosher — fully respected, never violated" },
+          { name: "Age-adjusted nutrition science", detail: "Recommendations calibrated to your age group — what works at 22 is different at 52" },
+        ],
+      },
+      {
+        heading: "Body & Mind Tracker",
+        Icon: Watch,
+        features: [
+          { name: "Wearable device sync", detail: "Fitbit, Garmin, Google Fit supported now. Apple Watch & Samsung Health coming with mobile app." },
+          { name: "HRV, sleep, heart rate & steps", detail: "The data that actually predicts your mental state — tracked daily and analysed by AI" },
+          { name: "Age-adjusted health norms", detail: "HRV of 28ms means something very different at 25 vs 55 — C4U reads the right norms for your age" },
+          { name: "Body ↔ Mind correlation detection", detail: "'3 nights under 7 hours correlates with your 4/10 mood days' — the AI names what you can't see" },
+        ],
+      },
+      {
         heading: "Analytics & Insights",
         Icon: BarChart3,
         features: [
@@ -211,24 +263,27 @@ const COMPARISON = [
   { feature: "Healing & focus music library",     free: false, base: true,  plus: true,  transform: true,  note: "" },
   { feature: "New content weekly",                free: false, base: true,  plus: true,  transform: true,  note: "" },
   // Plus
-  { feature: "AI Companion — unlimited, 24/7",    free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "Voice mode (speak & listen)",       free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "AI remembers your full story",      free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "Daily Challenge + streak",          free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "Gender & age-personalised AI",      free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "Crisis detection & safety banner",  free: false, base: false, plus: true,  transform: true,  note: "" },
-  { feature: "Location sharing in crisis",        free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "AI Companion — unlimited, 24/7",          free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Voice mode (speak & listen)",             free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "AI remembers your full story",            free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Daily Challenge + streak tracking",       free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Mental health conditions (8 conditions)", free: false, base: false, plus: true,  transform: true,  note: "CBT/DBT/ACT" },
+  { feature: "Grief support with exercises",            free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Habit breaking toolkit",                  free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Emergency SOS — real-time urge support",  free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Crisis detection & safety banner",        free: false, base: false, plus: true,  transform: true,  note: "" },
+  { feature: "Local crisis resources (tap-to-call)",    free: false, base: false, plus: true,  transform: true,  note: "" },
   // Transform
-  { feature: "Personalised 7-day support plans",  free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Daily Diary with AI reflection",    free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Mood, energy & sleep tracking",     free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Food, drink & activity log",        free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Digital habits & screen time",      free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Life Goals + full roadmap",         free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Hourly → yearly milestone tracking",free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Weekly life review letter",         free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Pattern spotting & insights",       free: false, base: false, plus: false, transform: true,  note: "" },
-  { feature: "Progress score & dashboard",        free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Personalised 7-day support plans",        free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Daily Diary with AI reflection",          free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Mood, energy & sleep tracking",           free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Nutrition & Mood recommendations",        free: false, base: false, plus: false, transform: true,  note: "Food-brain science" },
+  { feature: "Body & Mind Tracker (wearable sync)",     free: false, base: false, plus: false, transform: true,  note: "HRV, sleep, HR" },
+  { feature: "Life Goals + full personalised roadmap",  free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Hourly → yearly milestone tracking",      free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Weekly life review letter",               free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Digital habits & screen time analysis",   free: false, base: false, plus: false, transform: true,  note: "" },
+  { feature: "Pattern spotting & AI insights",          free: false, base: false, plus: false, transform: true,  note: "" },
 ];
 
 export default async function PremiumPage() {

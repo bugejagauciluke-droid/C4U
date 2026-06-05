@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   ArrowRight, Heart, Sparkles, Headphones, Music,
   MessageCircle, Star, CheckCircle, Building2, BookOpen,
-  Target, Zap, Crown, Shield,
+  Target, Zap, Crown, Shield, Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,44 +32,58 @@ const WHAT_YOU_GET = [
   {
     Icon: Headphones,
     title: "Guided meditations",
-    desc: "8 sessions built for grief, anxiety, sleep, overwhelm, and more. Each one clinically designed — not generic wellness filler.",
+    desc: "8 sessions for grief, anxiety, sleep, overwhelm, and more. Clinically designed, not generic wellness filler.",
     tier: "Base",
     gradient: "from-indigo-500 to-violet-600",
   },
   {
-    Icon: Music,
-    title: "Healing music",
-    desc: "Curated tracks for sleep, focus, calm, and emotional processing. Something new every week.",
-    tier: "Base",
-    gradient: "from-rose-400 to-pink-600",
-  },
-  {
     Icon: MessageCircle,
     title: "AI Companion",
-    desc: "Unlimited, 24/7. Voice mode. Remembers everything. Responds like a caring person who actually knows you — not a bot.",
+    desc: "Unlimited, 24/7. Voice mode. Remembers your whole story. Responds like a caring person who actually knows you.",
     tier: "Plus",
     gradient: "from-sky-500 to-teal-600",
   },
   {
-    Icon: Zap,
-    title: "Daily Challenge",
-    desc: "One personalised mission per day built from your actual life. 'Call Marco today'. 'Say what you've been holding back.' Streak tracking included.",
+    Icon: Brain,
+    title: "Condition Support",
+    desc: "CBT, DBT, and ACT exercises for anxiety, ADHD, depression, social anxiety, OCD, trauma, panic, and burnout. Evidence-based, not generic.",
+    tier: "Plus",
+    gradient: "from-violet-500 to-purple-700",
+  },
+  {
+    Icon: Heart,
+    title: "Grief & Loss",
+    desc: "No timelines, no rushing. Support grounded in real grief therapy — for death, divorce, heartbreak, pregnancy loss, and every kind of loss.",
+    tier: "Plus",
+    gradient: "from-rose-400 to-pink-600",
+  },
+  {
+    Icon: Shield,
+    title: "Habit Breaking + SOS",
+    desc: "Brain-science approach to breaking habits. Emergency SOS button for when the urge hits hard — real crisis lines, urge timer, immediate steps.",
     tier: "Plus",
     gradient: "from-amber-400 to-orange-500",
   },
   {
     Icon: BookOpen,
     title: "Daily Diary",
-    desc: "Private journal with AI analysis. Track mood, sleep, food, digital habits, social life. The AI spots patterns you'd never notice yourself.",
+    desc: "Private journal with AI analysis. Track mood, sleep, food, digital habits. The AI spots the patterns you'd never notice yourself.",
     tier: "Transform",
     gradient: "from-teal-500 to-emerald-600",
   },
   {
     Icon: Target,
     title: "Life Goals & Roadmap",
-    desc: "Tell C4U what you want. It builds a full plan — hourly habits, daily tasks, weekly milestones, monthly targets, yearly identity shift. Weekly review letter included.",
+    desc: "Tell C4U what you want. It builds a full plan — hourly habits, daily tasks, weekly milestones, monthly targets, yearly identity shift.",
     tier: "Transform",
     gradient: "from-violet-500 to-indigo-700",
+  },
+  {
+    Icon: Zap,
+    title: "Nutrition & Body Tracking",
+    desc: "Food recommendations based on mood science. Smartwatch sync for HRV, sleep, and heart rate — your body's data connected to your mental health.",
+    tier: "Transform",
+    gradient: "from-emerald-500 to-teal-600",
   },
 ];
 
